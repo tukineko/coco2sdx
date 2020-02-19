@@ -104,7 +104,11 @@ void Game07Layer::clickCard(int tagId) {
     }
     else {
         if (_card1Id == _cardAry[tagId]) {
-
+            if (this->checkCards()) {
+                auto text = Sprite::create("txt_gameover.png");
+                text->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+                this->addChild(text, 10);
+            }
         }
         else {
             _isAnime = true;
@@ -162,6 +166,24 @@ void Game07Layer::missAnime() {
                     }),
                 nullptr)
         );
+    }
+}
+
+//すべてのカードのフラグをチェック
+bool Game07Layer::checkCards() {
+
+    int num = 0;
+    for (int i = 0; i < (int)_card_boolAry.size(); i++) {
+        if (_card_boolAry[i] == true) {
+            num++;
+        }
+    }
+
+    if (num == 12) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
 

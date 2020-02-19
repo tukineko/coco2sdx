@@ -30,6 +30,7 @@ public:
 
     void clickCard(int tagId);
     void missAnime();
+    bool checkCards();
 
     void backTitleCallback();
 
