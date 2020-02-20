@@ -30,16 +30,11 @@ bool Game01Layer::init()
     _scoreBatchNode = SpriteBatchNode::create("number.png");
     this->addChild(_scoreBatchNode);
 
-    //背景
-    auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
-    this->addChild(bg, 0);
-
     //初期表示
     this->initDisp();
 
-    //スコア表示
-    this->viewScore();
-
+    //一定間隔でエネミーの出現
+    schedule(schedule_selector(Game01Layer::spawnEnemy), 0.5f);
 
     //タッチイベントの設定
     auto listener = EventListenerTouchOneByOne::create();
@@ -52,18 +47,16 @@ bool Game01Layer::init()
 }
 
 void Game01Layer::initDisp() {
-    /*for (int x = 0; x < 3; x++) {
-        for (int y = 0; y < 3; y++) {
-            kBlock blockType = (kBlock)(rand() % 4);
-            DropSprite* block = DropSprite::create(10000, blockType, kStatusNormal);
-            block->setPosition(Vec2(200 + x * 150, 200 + y * 150));
-            this->addChild(block, 0, 10000);
+    //背景
+    auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
+    this->addChild(bg, 0);
+    
+    //スコア表示
+    this->viewScore();
 
-
-        }
-    }*/
 }
 
+//スコアを表示する
 void Game01Layer::viewScore() {
     //scoreの名前がついているノードをすべて削除
     this->enumerateChildren("score", [](Node* node) -> bool {
@@ -89,10 +82,49 @@ void Game01Layer::viewScore() {
     }
 }
 
+void Game01Layer::spawnEnemy(float frame) {
+    kEnemyType type = (kEnemyType)(rand() % 3);
+    auto enemy = Enemy::create(type);
+    int px = rand() % (int)winSizeW;
+    int py = rand() % (int)winSizeH;
+    enemy->setPosition(Vec2(px, py));
+    this->addChild(enemy, 5);
+    this->_enemys.pushBack(enemy);
+
+    //出現してから2秒後に消滅
+    enemy->runAction(
+        Sequence::create(
+            DelayTime::create(1.0f),
+            FadeOut::create(0.5f),
+            RemoveSelf::create(),
+            nullptr
+        )
+    );
+}
+
 //タッチした時に呼び出される関数
 bool Game01Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
-    _score++;
-    this->viewScore();
+
+    Vec2 location = touch->getLocation();
+
+    for (int i = 0; i < this->_enemys.size(); i++) {
+        auto enemy = this->_enemys.at(i);
+
+        Rect enemyRect = this->getRect(enemy);
+
+        if (enemyRect.containsPoint(location)) {
+            CCLOG("HIT! %d:%d", i, (int)enemy->getType());
+            int enemyId = (int)enemy->getType();
+
+            enemy->removeFromParent();
+            this->_enemys.erase(i);
+            i--;
+
+            //スコアを更新
+            _score += _EnemyScore[enemyId];
+            this->viewScore();
+        }
+    }
 
     return true;
 }
@@ -102,61 +134,76 @@ void Game01Layer::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event) {
     auto location = touch->getLocation();
 }
 
+//ノードのRECTを返す
+Rect Game01Layer::getRect(Node* node)
+{
+    Point point = node->getPosition();
+    int width = node->getContentSize().width;
+    int height = node->getContentSize().height;
+    return Rect(point.x - (width / 2), point.y - (height / 2), width, height);
+}
+
 #include "TitleLayer.h"
 void Game01Layer::backTitleCallback() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, TitleLayer::createScene(), Color3B::WHITE));
 }
 
-DropSprite::DropSprite()
+/***********************************************
+*エネミークラス
+***********************************************/
+//コンストラクター
+//作成されるときに起こる処理
+//:以降で数値の初期化をすることが出来る
+Enemy::Enemy()
 {
 }
 
-DropSprite::~DropSprite()
+//デストラクター
+//このクラスが終わるときに起こる処理
+Enemy::~Enemy()
 {
 }
 
-DropSprite* DropSprite::create(int _tag, kBlock _type, kStatus _status)
+Enemy* Enemy::create(kEnemyType _type)
 {
-    DropSprite* pRet = new DropSprite();
+    auto sp = new Enemy();
+    sp->init(_type);
+    sp->autorelease();
+    return sp;
 
-    if (pRet && pRet->init(_tag, _type, _status))
+    /*Enemy* ret = new Enemy();
+
+    if (ret && ret->init(_type))
     {
-        return pRet;
-
+        ret->autorelease();
+        return ret;
     }
-    else {
-        CC_SAFE_DELETE(pRet);
+    else
+    {
+        CC_SAFE_DELETE(ret);
         return NULL;
-    }
+    }*/
 }
 
-bool DropSprite::init(int _tag, kBlock _type, kStatus _status)
+bool Enemy::init(kEnemyType _type)
 {
-    if (!Sprite::initWithFile(getDropImageFileName(_type)))
-    {
-        return false;
-    }
+    if (!Sprite::initWithFile(getImageFileName(_type))) return false;
 
-    tag = _tag;
     type = _type;
-    status = _status;
 
     return true;
 }
 
-const char* DropSprite::getDropImageFileName(kBlock _type)
+const char* Enemy::getImageFileName(kEnemyType _type)
 {
     switch (_type) {
-    case kBlockRed:
+    case Red:
         return "puzzle1.png";
 
-    case kBlockBlue:
+    case Blue:
         return "puzzle2.png";
 
-    case kBlockYellow:
-        return "puzzle4.png";
-
-    case kBlockGreen:
+    case Green:
         return "puzzle3.png";
 
     default:

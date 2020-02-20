@@ -5,25 +5,36 @@
 
 USING_NS_CC;
 
-enum kBlock {
-    kBlockRed,
-    kBlockBlue,
-    kBlockYellow,
-    kBlockGreen
+enum kEnemyType {
+    Red,
+    Blue,
+    Green
 };
 
-enum kStatus {
-    kStatusNormal,
-    kStatusMarked,
-    kStatusSwept
+class Enemy : public Sprite
+{
+protected:
+    //タイプによって読み込む画像を変更
+    const char* getImageFileName(kEnemyType _type);
+
+public:
+    //getterとsetterを同時に作成
+    //このget~とset~で親からアクセスすることが出来る
+    CC_SYNTHESIZE(kEnemyType, type, Type);
+
+    Enemy();
+    ~Enemy();
+    virtual bool init(kEnemyType _type);
+    static Enemy* create(kEnemyType _type);
 };
 
 class Game01Layer : public Layer
 {
 protected:
     SpriteBatchNode* _scoreBatchNode;
+    Vector<Enemy*> _enemys;
     int _score = 0;
-    int _board[3][3];
+    std::vector<int> _EnemyScore = {100,300,500};
 
 public:
     static Scene* createScene();
@@ -32,26 +43,13 @@ public:
     
     void initDisp();
     void viewScore();
+    void spawnEnemy(float frame);
+    Rect getRect(Node* node);
 
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
 
     void backTitleCallback();
-};
-
-class DropSprite : public Sprite
-{
-protected:
-    const char* getDropImageFileName(kBlock _type);
-public:
-    CC_SYNTHESIZE(int, tag, Tag);
-    CC_SYNTHESIZE(kBlock, type, Type);
-    CC_SYNTHESIZE(kStatus, status, Status);
-
-    DropSprite();
-    virtual ~DropSprite();
-    virtual bool init(int _tag, kBlock _type, kStatus _status);
-    static DropSprite* create(int _tag, kBlock _type, kStatus _status);
 };
 
 #endif // __Game01Layer_H__
