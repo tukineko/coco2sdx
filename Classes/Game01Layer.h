@@ -32,7 +32,7 @@ class Game01Layer : public Layer
 {
 protected:
     SpriteBatchNode* _scoreBatchNode;
-    Vector<Enemy*> _enemys;
+    std::vector<Enemy*> _enemys;
     int _score = 0;
     std::vector<int> _EnemyScore = {100,300,500};
 

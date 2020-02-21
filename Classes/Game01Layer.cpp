@@ -89,7 +89,7 @@ void Game01Layer::spawnEnemy(float frame) {
     int py = rand() % (int)winSizeH;
     enemy->setPosition(Vec2(px, py));
     this->addChild(enemy, 5);
-    this->_enemys.pushBack(enemy);
+    this->_enemys.push_back(enemy);
 
     //出現してから2秒後に消滅
     enemy->runAction(
@@ -97,6 +97,10 @@ void Game01Layer::spawnEnemy(float frame) {
             DelayTime::create(1.0f),
             FadeOut::create(0.5f),
             RemoveSelf::create(),
+            CallFunc::create([=]() {
+                this->_enemys.erase(remove(this->_enemys.begin(), this->_enemys.end(), enemy), this->_enemys.end());
+                this->_enemys.shrink_to_fit();
+            }),
             nullptr
         )
     );
@@ -116,10 +120,11 @@ bool Game01Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
             CCLOG("HIT! %d:%d", i, (int)enemy->getType());
             int enemyId = (int)enemy->getType();
 
+            CC_SAFE_RETAIN(enemy);
             enemy->removeFromParent();
-            this->_enemys.erase(i);
-            i--;
-
+            CC_SAFE_RELEASE(enemy);
+            this->_enemys.erase(this->_enemys.begin() + i);
+            
             //スコアを更新
             _score += _EnemyScore[enemyId];
             this->viewScore();
