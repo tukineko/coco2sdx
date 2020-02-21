@@ -21,6 +21,7 @@ public:
     void nextSceneCallback5();
     void nextSceneCallback6();
     void nextSceneCallback7();
+    void nextSceneCallback8();
 };
 
 #endif // __TitleLayer_H__

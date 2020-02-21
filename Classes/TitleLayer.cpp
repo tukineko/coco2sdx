@@ -10,6 +10,7 @@
 #include "Game05Layer.h"
 #include "Game06Layer.h"
 #include "Game07Layer.h"
+#include "Game08Layer.h"
 
 USING_NS_CC;
 
@@ -107,8 +108,14 @@ bool TitleLayer::init()
     mItem7->setAnchorPoint(Point::ZERO);
     mItem7->setColor(Color3B::BLUE);
 
+    auto labelBtnLabel8 = Label::createWithSystemFont("自機操作のキャッチ", "Arial", fontsize);
+    auto mItem8 = MenuItemLabel::create(labelBtnLabel8, CC_CALLBACK_0(TitleLayer::nextSceneCallback8, this));
+    mItem8->setPosition(Vec2(leftPos, winSizeH - 700));
+    mItem8->setAnchorPoint(Point::ZERO);
+    mItem8->setColor(Color3B::BLUE);
+
     //メニューを作成
-    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, NULL);
+    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu);
 
@@ -141,4 +148,8 @@ void TitleLayer::nextSceneCallback6() {
 
 void TitleLayer::nextSceneCallback7() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game07Layer::createScene(), Color3B::WHITE));
+}
+
+void TitleLayer::nextSceneCallback8() {
+    Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game08Layer::createScene(), Color3B::WHITE));
 }
