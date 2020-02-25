@@ -11,6 +11,7 @@
 #include "Game06Layer.h"
 #include "Game07Layer.h"
 #include "Game08Layer.h"
+#include "Game09Layer.h"
 
 USING_NS_CC;
 
@@ -65,6 +66,7 @@ bool TitleLayer::init()
     //メニューボタン（テキスト）
     int fontsize = 36;
     int leftPos = 100;
+    int rightPos = 700;
 
     auto labelBtnLabel1 = Label::createWithSystemFont("タップしたら得点が増えるだけ", "Arial", fontsize);
     auto mItem1 = MenuItemLabel::create(labelBtnLabel1, CC_CALLBACK_0(TitleLayer::nextSceneCallback, this));
@@ -114,8 +116,14 @@ bool TitleLayer::init()
     mItem8->setAnchorPoint(Point::ZERO);
     mItem8->setColor(Color3B::BLUE);
 
+    auto labelBtnLabel9 = Label::createWithSystemFont("ビジュアルパズルっぽいもの", "Arial", fontsize);
+    auto mItem9 = MenuItemLabel::create(labelBtnLabel9, CC_CALLBACK_0(TitleLayer::nextSceneCallback9, this));
+    mItem9->setPosition(Vec2(rightPos, winSizeH - 350));
+    mItem9->setAnchorPoint(Point::ZERO);
+    mItem9->setColor(Color3B::BLUE);
+
     //メニューを作成
-    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, NULL);
+    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, mItem9, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 10);
 
@@ -169,6 +177,10 @@ void TitleLayer::nextSceneCallback7() {
 
 void TitleLayer::nextSceneCallback8() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game08Layer::createScene(), Color3B::WHITE));
+}
+
+void TitleLayer::nextSceneCallback9() {
+    Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game09Layer::createScene(), Color3B::WHITE));
 }
 
 //タッチした時に呼び出される関数

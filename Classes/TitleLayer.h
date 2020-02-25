@@ -22,6 +22,7 @@ public:
     void nextSceneCallback6();
     void nextSceneCallback7();
     void nextSceneCallback8();
+    void nextSceneCallback9();
 
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
