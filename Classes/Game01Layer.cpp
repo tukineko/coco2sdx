@@ -24,17 +24,24 @@ bool Game01Layer::init()
     labelItem01->setColor(Color3B::BLUE);
     auto menu = Menu::create(labelItem01, nullptr);
     menu->setPosition(Point::ZERO);
-    this->addChild(menu, 100);
+    this->addChild(menu, (int)mainZOderList::TITLEBACK);
 
     //スコア画像はBatchNodeで処理
     _scoreBatchNode = SpriteBatchNode::create("number.png");
     this->addChild(_scoreBatchNode);
 
+    //初期化
+    _score = 0;
+    _timer = 20.0f;
+    _game_state = (int)GameState::DEFAULT;
+
     //初期表示
     this->initDisp();
 
     //一定間隔でエネミーの出現
-    schedule(schedule_selector(Game01Layer::spawnEnemy), 0.5f);
+    schedule(schedule_selector(Game01Layer::spawnEnemy), 0.4f);
+
+    this->scheduleUpdate();
 
     //タッチイベントの設定
     auto listener = EventListenerTouchOneByOne::create();
@@ -49,11 +56,16 @@ bool Game01Layer::init()
 void Game01Layer::initDisp() {
     //背景
     auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
-    this->addChild(bg, 0);
+    this->addChild(bg, (int)mainZOderList::BG);
     
     //スコア表示
     this->viewScore();
 
+    //制限時間を表示
+    this->viewTimer();
+
+    //ゲーム開始
+    this->GameStart();
 }
 
 //スコアを表示する
@@ -74,36 +86,132 @@ void Game01Layer::viewScore() {
 
     for (int i = 0; i < lang; i++) {
         auto number = Sprite::createWithTexture(_scoreBatchNode->getTexture(), Rect(0, 0, numberRect, numberRect));
-        number->setPosition(Vec2((winSizeCenterW - 300) + numberRect * i, winSizeH - 100));
+        number->setPosition(Vec2((winSizeCenterW - 300) + numberRect * i, winSizeH - 50));
         char c = score[i];
         int num = c - '0';
         number->setTextureRect(Rect(numberRect * num, 0, numberRect, numberRect));
-        this->addChild(number, 10, "score");
+        this->addChild(number, (int)mainZOderList::SCORE, "score");
     }
 }
 
-void Game01Layer::spawnEnemy(float frame) {
-    kEnemyType type = (kEnemyType)(rand() % 3);
-    auto enemy = Enemy::create(type);
-    int px = rand() % (int)winSizeW;
-    int py = rand() % (int)winSizeH;
-    enemy->setPosition(Vec2(px, py));
-    this->addChild(enemy, 5);
-    this->_enemys.push_back(enemy);
+//制限時間を表示する
+void Game01Layer::viewTimer() {
+    //timerの名前がついているノードをすべて削除
+    this->enumerateChildren("timer", [](Node* node) -> bool {
+        auto action = RemoveSelf::create();
+        node->runAction(action);
+        return false;
+    });
 
-    //出現してから2秒後に消滅
-    enemy->runAction(
-        Sequence::create(
-            DelayTime::create(1.0f),
-            FadeOut::create(0.5f),
-            RemoveSelf::create(),
-            CallFunc::create([=]() {
-                this->_enemys.erase(remove(this->_enemys.begin(), this->_enemys.end(), enemy), this->_enemys.end());
-                this->_enemys.shrink_to_fit();
-            }),
+    std::string timer = StringUtils::toString((int)_timer);
+    int lang = timer.length();
+    int numberRect = 64;
+
+    for (int i = 0; i < lang; i++) {
+        auto number = Sprite::createWithTexture(_scoreBatchNode->getTexture(), Rect(0, 0, numberRect, numberRect));
+        number->setPosition(Vec2(100 + numberRect * i, winSizeH - 50));
+        char c = timer[i];
+        int num = c - '0';
+        number->setTextureRect(Rect(numberRect * num, 0, numberRect, numberRect));
+        this->addChild(number, (int)mainZOderList::SCORE, "timer");
+    }
+}
+
+void Game01Layer::update(float flame) {
+    if (_game_state == (int)GameState::GAME) {
+        _timer -= flame;
+        this->viewTimer();
+        if ((int)_timer <= 0) {
+            _game_state = (int)GameState::TIMEUP;
+            this->GameOver();
+        }
+    }
+}
+
+void Game01Layer::GameStart()
+{
+    auto count3 = Sprite::create("countdown3.png");
+    count3->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    count3->setOpacity(0);
+    this->addChild(count3);
+
+    auto count2 = Sprite::create("countdown2.png");
+    count2->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    count2->setOpacity(0);
+    this->addChild(count2);
+
+    auto count1 = Sprite::create("countdown1.png");
+    count1->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    count1->setOpacity(0);
+    this->addChild(count1);
+
+    auto start = Sprite::create("txt_start.png");
+    start->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    start->setOpacity(1);
+    this->addChild(start);
+
+    auto ac = Sequence::create(
+        Spawn::create(
+            CCEaseOut::create(MoveBy::create(0.3f, Vec2(0, 100)), 3),
+            CCEaseOut::create(FadeIn::create(0.5f), 3),
             nullptr
-        )
+        ),
+        CCEaseOut::create(FadeOut::create(0.1f), 3),
+        nullptr);
+
+    auto ac2 = Sequence::create(
+        FadeIn::create(0.0f),
+        Spawn::create(
+            CCEaseIn::create(ScaleTo::create(0.3f, 2.0f), 3),
+            CCEaseIn::create(FadeOut::create(0.3f), 3),
+            nullptr
+        ),
+        CCEaseOut::create(FadeOut::create(0.1f), 3),
+        CallFunc::create([this]() {
+            _game_state = (int)GameState::GAME;
+    }),
+        nullptr);
+
+    count3->runAction(
+        Sequence::create(
+            DelayTime::create(0.5f),
+            ac,
+            TargetedAction::create(count2, Sequence::create(ac, RemoveSelf::create(), nullptr)),
+            TargetedAction::create(count1, Sequence::create(ac, RemoveSelf::create(), nullptr)),
+            TargetedAction::create(start, Sequence::create(ac2, RemoveSelf::create(), nullptr)),
+            RemoveSelf::create(),
+            nullptr)
     );
+}
+
+//敵の出現
+void Game01Layer::spawnEnemy(float frame) {
+    if (_game_state == (int)GameState::GAME) {
+        kEnemyType type = (kEnemyType)(rand() % 3);
+        auto enemy = Enemy::create(type);
+        //cocos2dxのrandom関数を使う
+        int px = random(75, (int)winSizeW - 75);
+        int py = random(75, (int)winSizeH - 200);
+        //CCLOG("%d:%d", px, py);
+        enemy->setPosition(Vec2(px, py));
+        this->addChild(enemy, (int)mainZOderList::ENEMY);
+        this->_enemys.push_back(enemy);
+
+        auto ac = Sequence::create(
+                DelayTime::create(1.0f),
+                FadeOut::create(0.5f),
+                RemoveSelf::create(),
+                CallFunc::create([=]() {
+                    this->_enemys.erase(remove(this->_enemys.begin(), this->_enemys.end(), enemy), this->_enemys.end());
+                    this->_enemys.shrink_to_fit();
+                }),
+                nullptr
+                );
+        ac->setTag(1);
+
+        //出現してから1秒後に消滅
+        enemy->runAction(ac);
+    }
 }
 
 //タッチした時に呼び出される関数
@@ -111,22 +219,34 @@ bool Game01Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
 
     Vec2 location = touch->getLocation();
 
+    if (_game_state != (int)GameState::GAME) {
+        return false;
+    }
+
     for (int i = 0; i < this->_enemys.size(); i++) {
         auto enemy = this->_enemys.at(i);
 
         Rect enemyRect = this->getRect(enemy);
 
         if (enemyRect.containsPoint(location)) {
-            CCLOG("HIT! %d:%d", i, (int)enemy->getType());
-            int enemyId = (int)enemy->getType();
+            int enemy_point = enemy->getEnemyPoint();
+            enemy->stopActionByTag(1);
 
-            CC_SAFE_RETAIN(enemy);
-            enemy->removeFromParent();
-            CC_SAFE_RELEASE(enemy);
+            enemy->runAction(
+                Sequence::create(
+                    Spawn::create(
+                        FadeOut::create(0.5f),
+                        MoveBy::create(0.5f, Vec2(100, 0)),
+                        nullptr
+                    ),
+                    RemoveSelf::create(),
+                    nullptr)
+            );
+
             this->_enemys.erase(this->_enemys.begin() + i);
             
             //スコアを更新
-            _score += _EnemyScore[enemyId];
+            _score += enemy_point;
             this->viewScore();
         }
     }
@@ -146,6 +266,12 @@ Rect Game01Layer::getRect(Node* node)
     int width = node->getContentSize().width;
     int height = node->getContentSize().height;
     return Rect(point.x - (width / 2), point.y - (height / 2), width, height);
+}
+
+void Game01Layer::GameOver() {
+    auto gameover = Sprite::create("txt_gameover.png");
+    gameover->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    this->addChild(gameover);
 }
 
 #include "TitleLayer.h"
@@ -171,12 +297,7 @@ Enemy::~Enemy()
 
 Enemy* Enemy::create(kEnemyType _type)
 {
-    auto sp = new Enemy();
-    sp->init(_type);
-    sp->autorelease();
-    return sp;
-
-    /*Enemy* ret = new Enemy();
+    Enemy* ret = new Enemy();
 
     if (ret && ret->init(_type))
     {
@@ -187,7 +308,7 @@ Enemy* Enemy::create(kEnemyType _type)
     {
         CC_SAFE_DELETE(ret);
         return NULL;
-    }*/
+    }
 }
 
 bool Enemy::init(kEnemyType _type)
@@ -214,4 +335,8 @@ const char* Enemy::getImageFileName(kEnemyType _type)
     default:
         return "";
     }
+}
+
+int Enemy::getEnemyPoint() {
+    return _EnemyScore[type];
 }

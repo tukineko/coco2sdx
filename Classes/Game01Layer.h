@@ -5,10 +5,27 @@
 
 USING_NS_CC;
 
+//ゲームの状態
+enum class GameState {
+    DEFAULT = 0,
+    COUNTDOWN,
+    GAME,
+    TIMEUP,
+    RESULT,
+};
+
 enum kEnemyType {
     Red,
     Blue,
     Green
+};
+
+//重なり順
+enum class mainZOderList {
+    BG = 0,
+    ENEMY,
+    SCORE,
+    TITLEBACK,
 };
 
 class Enemy : public Sprite
@@ -16,6 +33,7 @@ class Enemy : public Sprite
 protected:
     //タイプによって読み込む画像を変更
     const char* getImageFileName(kEnemyType _type);
+    std::vector<int> _EnemyScore = { 100,300,500 };
 
 public:
     //getterとsetterを同時に作成
@@ -26,6 +44,7 @@ public:
     ~Enemy();
     virtual bool init(kEnemyType _type);
     static Enemy* create(kEnemyType _type);
+    int getEnemyPoint();
 };
 
 class Game01Layer : public Layer
@@ -33,8 +52,9 @@ class Game01Layer : public Layer
 protected:
     SpriteBatchNode* _scoreBatchNode;
     std::vector<Enemy*> _enemys;
-    int _score = 0;
-    std::vector<int> _EnemyScore = {100,300,500};
+    int _game_state;
+    int _score;
+    float _timer;
 
 public:
     static Scene* createScene();
@@ -43,8 +63,13 @@ public:
     
     void initDisp();
     void viewScore();
+    void viewTimer();
+    void GameStart();
+    void GameOver();
     void spawnEnemy(float frame);
     Rect getRect(Node* node);
+
+    void update(float frame);
 
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
