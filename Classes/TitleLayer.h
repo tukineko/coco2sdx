@@ -22,6 +22,10 @@ public:
     void nextSceneCallback6();
     void nextSceneCallback7();
     void nextSceneCallback8();
+
+    bool onTouchBegan(Touch* touch, Event* event);
+    void onTouchEnded(Touch* touch, Event* event);
+    void onTouchMoved(Touch* touch, Event* event);
 };
 
 #endif // __TitleLayer_H__

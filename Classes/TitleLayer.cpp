@@ -55,7 +55,7 @@ bool TitleLayer::init()
     //タイトル
     auto title = Sprite::create("title.png");
     title->setPosition(Vec2(winSizeCenterW, winSizeH - 150));
-    this->addChild(title);
+    this->addChild(title, 10);
 
 
     //メニューボタン（画像）
@@ -117,7 +117,24 @@ bool TitleLayer::init()
     //メニューを作成
     auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, NULL);
     menu->setPosition(Point::ZERO);
-    this->addChild(menu);
+    this->addChild(menu, 10);
+
+    //演出
+    auto bg2 = Sprite::create("bg01.png");
+    bg2->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    bg2->setScale(2.5f);
+    this->addChild(bg2, 5);
+    auto ac = RepeatForever::create(
+        RotateBy::create(10.0f, 360.0f)
+    );
+    bg2->runAction(ac);
+
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = CC_CALLBACK_2(TitleLayer::onTouchBegan, this);
+    listener->onTouchEnded = CC_CALLBACK_2(TitleLayer::onTouchEnded, this);
+    listener->onTouchMoved = CC_CALLBACK_2(TitleLayer::onTouchMoved, this);
+    auto dispatcher = Director::getInstance()->getEventDispatcher();
+    dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }
@@ -152,4 +169,44 @@ void TitleLayer::nextSceneCallback7() {
 
 void TitleLayer::nextSceneCallback8() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game08Layer::createScene(), Color3B::WHITE));
+}
+
+//タッチした時に呼び出される関数
+bool TitleLayer::onTouchBegan(Touch* touch, Event* event) {
+    auto location = touch->getLocation();
+
+    // 作成したパーティクルのプロパティリストを読み込み
+    auto particle = ParticleSystemQuad::create("particle_texture.plist");
+    particle->resetSystem();
+    // パーティクルを表示する場所の設定
+    particle->setPosition(location);
+    //パーティクルのメモリーリーク回避（★重要）
+    particle->setAutoRemoveOnFinish(true);
+    // パーティクルを配置
+    this->addChild(particle, 100);
+    
+
+    return true;
+}
+
+//タッチを離した時に呼び出される関数  
+void TitleLayer::onTouchEnded(Touch* touch, Event* event) {
+
+
+
+}
+
+//タッチしながら移動中に呼び出される関数
+void TitleLayer::onTouchMoved(Touch* touch, Event* event) {
+    auto location = touch->getLocation();
+
+    // 作成したパーティクルのプロパティリストを読み込み
+    auto particle = ParticleSystemQuad::create("particle_texture.plist");
+    particle->resetSystem();
+    // パーティクルを表示する場所の設定
+    particle->setPosition(location);
+    //パーティクルのメモリーリーク回避（★重要）
+    particle->setAutoRemoveOnFinish(true);
+    // パーティクルを配置
+    this->addChild(particle, 100);
 }
