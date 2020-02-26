@@ -5,17 +5,40 @@
 
 USING_NS_CC;
 
+enum class kChara {
+    CHARA01 = 0,
+    CHARA02,
+    CHARA03,
+};
+
+class Chara : public Sprite
+{
+protected:
+    //タイプによって読み込む画像を変更
+    const char* getImageFileName(kChara _type);
+    
+public:
+    CC_SYNTHESIZE(bool, state, State);
+
+    Chara();
+    ~Chara();
+    virtual bool init(kChara _type);
+    static Chara* create(kChara _type);
+};
+
 class Game09Layer : public Layer
 {
 protected:
-    Sprite* _chara01;
+    Chara* _chara01;
     Sprite* _chara01_hit;
     Sprite* _chara01_msg;
-    Sprite* _chara02;
-    Sprite* _chara03;
+    Chara* _chara02;
+    Sprite* _chara02_hit;
+    Sprite* _chara02_msg;
+    Chara* _chara03;
+    Sprite* _chara03_hit;
+    Sprite* _chara03_msg;
     Node* _currentNode;
-
-    bool _chara01_state;
 
 public:
     static Scene* createScene();
