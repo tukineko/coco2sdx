@@ -1,6 +1,5 @@
-#include "Game09Layer.h"
+ï»¿#include "Game09Layer.h"
 #include "SimpleAudioEngine.h"
-#include <iomanip>
 
 Scene* Game09Layer::createScene()
 {
@@ -26,96 +25,68 @@ bool Game09Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 100);
 
-    //ƒOƒŠƒbƒhü
-    /*auto render = RenderTexture::create(winSizeW, winSizeH);
-    render->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
-    this->addChild(render, 999);
-
-    render->begin();
-    auto line = DrawNode::create();
-    line->retain();
-    for (int x = 0; x < 10; x++) {
-        line->drawSegment(Vec2(100 * x, 0), Vec2(100 * x, winSizeH), 1.0f, Color4F::RED);
-        line->Node::visit();
-    }
-    for (int y = 0; y < 7; y++) {
-        line->drawSegment(Vec2(0, 100 * y), Vec2(winSizeW, 100 * y), 1.0f, Color4F::RED);
-        line->Node::visit();
-    }
-    render->end();*/
-
-    //”wŒi
+    //èƒŒæ™¯
     auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
     this->addChild(bg, 0);
 
-    //DrawNode* cirlce = DrawNode::create();
-    //cirlce->drawCircle(Vec2::ZERO, 50, 45, 360, false, 1, 1, Color4F::BLUE);
-
-    //ƒx[ƒXŠm”F
-    /*auto base = Sprite::create("game09/base.png");
-    base->setPosition(Vec2(winSizeCenterW - 300, winSizeCenterH));
-    this->addChild(base, 2);*/
-
-    //ƒVƒ‹ƒGƒbƒg”wŒi
+    //ã‚·ãƒ«ã‚¨ãƒƒãƒˆèƒŒæ™¯
     auto base_kage = Sprite::create("game09/base_kage.png");
     base_kage->setPosition(Vec2(winSizeCenterW - 300, winSizeCenterH));
     this->addChild(base_kage, 1);
 
-    //ƒLƒƒƒ‰1‚Ì•`Ê
+    //ã‚­ãƒ£ãƒ©1ã®æå†™
     _chara01 = Chara::create(kChara::CHARA01);
     _chara01->setPosition(Vec2(winSizeW - 300, winSizeCenterH + 150));
     this->addChild(_chara01, 3, 1);
 
-    //ƒLƒƒƒ‰1‚Ì“–‚½‚è”»’è
+    //ã‚­ãƒ£ãƒ©1ã®å½“ãŸã‚Šåˆ¤å®š
     _chara01_hit = Sprite::create();
     _chara01_hit->setOpacity(0);
     _chara01_hit->setTextureRect(Rect(0, 0, 100, 124));
     _chara01_hit->setPosition(Vec2(215, 375));
     this->addChild(_chara01_hit, 2);
 
-    //ƒLƒƒƒ‰1‚ÌƒZƒŠƒt
+    //ã‚­ãƒ£ãƒ©1ã®ã‚»ãƒªãƒ•
     _chara01_msg = Sprite::create("game09/chara01_msg.png");
     _chara01_msg->setPosition(Vec2(160, 413));
     _chara01_msg->setVisible(false);
     this->addChild(_chara01_msg, 4);
 
-    //ƒLƒƒƒ‰2‚Ì•`‰æ
+    //ã‚­ãƒ£ãƒ©2ã®æç”»
     _chara02 = Chara::create(kChara::CHARA02);
     _chara02->setPosition(Vec2(winSizeW - 300, winSizeCenterH));
     this->addChild(_chara02, 3, 2);
-    //ƒLƒƒƒ‰2‚Ì“–‚½‚è”»’è
+    //ã‚­ãƒ£ãƒ©2ã®å½“ãŸã‚Šåˆ¤å®š
     _chara02_hit = Sprite::create();
     _chara02_hit->setOpacity(0);
     //_chara02_hit->setColor(Color3B::BLUE);
     _chara02_hit->setTextureRect(Rect(0, 0, 94, 124));
     _chara02_hit->setPosition(Vec2(353, 378));
     this->addChild(_chara02_hit, 2);
-    //ƒLƒƒƒ‰2‚ÌƒZƒŠƒt
+    //ã‚­ãƒ£ãƒ©2ã®ã‚»ãƒªãƒ•
     _chara02_msg = Sprite::create("game09/chara02_msg.png");
     _chara02_msg->setPosition(Vec2(430, 413));
     _chara02_msg->setVisible(false);
     this->addChild(_chara02_msg, 4);
 
-    //ƒLƒƒƒ‰3‚Ì•`‰æ
+    //ã‚­ãƒ£ãƒ©3ã®æç”»
     _chara03 = Chara::create(kChara::CHARA03);
     _chara03->setPosition(Vec2(winSizeW - 300, winSizeCenterH - 150));
     this->addChild(_chara03, 3, 3);
-    //ƒLƒƒƒ‰3‚Ì“–‚½‚è”»’è
+    //ã‚­ãƒ£ãƒ©3ã®å½“ãŸã‚Šåˆ¤å®š
     _chara03_hit = Sprite::create();
     _chara03_hit->setOpacity(0);
     //_chara03_hit->setColor(Color3B::BLUE);
     _chara03_hit->setTextureRect(Rect(0, 0, 114, 124));
     _chara03_hit->setPosition(Vec2(575, 378));
     this->addChild(_chara03_hit, 2);
-    //ƒLƒƒƒ‰3‚ÌƒZƒŠƒt
+    //ã‚­ãƒ£ãƒ©3ã®ã‚»ãƒªãƒ•
     _chara03_msg = Sprite::create("game09/chara03_msg.png");
     _chara03_msg->setPosition(Vec2(510, 413));
     _chara03_msg->setVisible(false);
     this->addChild(_chara03_msg, 4);
 
-    this->scheduleUpdate();
-
-    //ƒ^ƒbƒ`ƒCƒxƒ“ƒg‚Ìİ’è
+    //ã‚¿ãƒƒãƒã‚¤ãƒ™ãƒ³ãƒˆã®è¨­å®š
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(Game09Layer::onTouchBegan, this);
     listener->onTouchMoved = CC_CALLBACK_2(Game09Layer::onTouchMoved, this);
@@ -126,13 +97,7 @@ bool Game09Layer::init()
     return true;
 }
 
-void Game09Layer::update(float flame) {
-    
-    
-
-}
-
-//ƒ^ƒbƒ`‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 bool Game09Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     Vec2 location = touch->getLocation();
 
@@ -155,14 +120,14 @@ bool Game09Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     return false;
 }
 
-//ƒ^ƒbƒ`‚µ‚È‚ª‚çˆÚ“®’†‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãªãŒã‚‰ç§»å‹•ä¸­ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 void Game09Layer::onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event) {
     Vec2 location = touch->getLocation();
     Vec2 preLocation = touch->getPreviousLocation();
     _currentNode->setPosition(Vec2(_currentNode->getPosition().x + location.x - preLocation.x, _currentNode->getPosition().y + location.y - preLocation.y));
 }
 
-//ƒ^ƒbƒ`‚ğ—£‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”  
+//ã‚¿ãƒƒãƒã‚’é›¢ã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°  
 void Game09Layer::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event) {
     Vec2 location = touch->getLocation();
 
@@ -227,17 +192,17 @@ void Game09Layer::backTitleCallback() {
 }
 
 /***********************************************
-*ƒLƒƒƒ‰ƒNƒ^[ƒNƒ‰ƒX
+*ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚¯ãƒ©ã‚¹
 ***********************************************/
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^[
-//ì¬‚³‚ê‚é‚Æ‚«‚É‹N‚±‚éˆ—
-//:ˆÈ~‚Å”’l‚Ì‰Šú‰»‚ğ‚·‚é‚±‚Æ‚ªo—ˆ‚é
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼
+//ä½œæˆã•ã‚Œã‚‹ã¨ãã«èµ·ã“ã‚‹å‡¦ç†
+//:ä»¥é™ã§æ•°å€¤ã®åˆæœŸåŒ–ã‚’ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹
 Chara::Chara()
 {
 }
 
-//ƒfƒXƒgƒ‰ƒNƒ^[
-//‚±‚ÌƒNƒ‰ƒX‚ªI‚í‚é‚Æ‚«‚É‹N‚±‚éˆ—
+//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼
+//ã“ã®ã‚¯ãƒ©ã‚¹ãŒçµ‚ã‚ã‚‹ã¨ãã«èµ·ã“ã‚‹å‡¦ç†
 Chara::~Chara()
 {
 }

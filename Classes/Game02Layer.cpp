@@ -1,4 +1,4 @@
-#include "Game02Layer.h"
+ï»¿#include "Game02Layer.h"
 #include "SimpleAudioEngine.h"
 
 #include "TitleLayer.h"
@@ -32,7 +32,7 @@ bool Game02Layer::init()
 
     this->_game_state = 0;
 
-    //ƒXƒRƒA•\¦
+    //ã‚¹ã‚³ã‚¢è¡¨ç¤º
     this->ViewScore();
 
     this->drawChara1();
@@ -52,7 +52,7 @@ bool Game02Layer::init()
 
 void Game02Layer::onEnterTransitionDidFinish()
 {
-    //‚±‚±‚É‰æ–Ê‘JˆÚŒã‚ÉŒÄ‚Ño‚µ‚½‚¢ˆ—‚ğ‘‚­
+    //ã“ã“ã«ç”»é¢é·ç§»å¾Œã«å‘¼ã³å‡ºã—ãŸã„å‡¦ç†ã‚’æ›¸ã
     this->_game_state = 1;
     this->GameStart();
 
@@ -73,19 +73,19 @@ void Game02Layer::GameOver() {
     gameover->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     this->addChild(gameover);
 
-    // ƒ‰ƒxƒ‹‚ğ¶¬
-    //Ver3.x CC_CALLBACK_1 ƒ}ƒNƒiˆø”‚ª‚P‚Âj‚É‚·‚é‚±‚Æ
+    // ãƒ©ãƒ™ãƒ«ã‚’ç”Ÿæˆ
+    //Ver3.x CC_CALLBACK_1 ãƒã‚¯ãƒ­ï¼ˆå¼•æ•°ãŒï¼‘ã¤ï¼‰ã«ã™ã‚‹ã“ã¨
     auto labelBtnLabel01 = LabelTTF::create("Back to Title", "fonts/Marker Felt.ttf", 48);
-    // ƒ‰ƒxƒ‹ƒƒjƒ…[ƒAƒNƒVƒ‡ƒ“æ‚Ìİ’è
+    // ãƒ©ãƒ™ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å…ˆã®è¨­å®š
     auto labelItem01 = MenuItemLabel::create(labelBtnLabel01, CC_CALLBACK_0(Game02Layer::nextSceneCallback, this));
-    // ƒ‰ƒxƒ‹‚Ìİ’u
+    // ãƒ©ãƒ™ãƒ«ã®è¨­ç½®
     labelItem01->setPosition(Vec2(winSizeCenterW, 200));
 
-    // ƒƒjƒ…[‚ğì¬ ©“®‰ğ•úƒIƒuƒWƒFƒNƒg
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½œæˆ è‡ªå‹•è§£æ”¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     auto menu = Menu::create(labelItem01, nullptr);
 
     menu->setPosition(Point::ZERO);
-    // ƒƒjƒ…[‚ğ’Ç‰Á
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¿½åŠ 
     this->addChild(menu);
 
 }
@@ -168,8 +168,8 @@ void Game02Layer::drawChara1()
     line->drawSegment(Vec2(winSizeW / 4, 0), Vec2(winSizeW / 4, winSizeH), 2.5f, Color4F::RED);
     this->addChild(line);
 
-    // ‹éŒ`
-    // xÀ•W, yÀ•W, width, height
+    // çŸ©å½¢
+    // xåº§æ¨™, yåº§æ¨™, width, height
     Rect rect = Rect(0, 0, 100, 200);
     auto chara1 = Sprite::create();
     chara1->setTextureRect(rect);
@@ -187,8 +187,8 @@ void Game02Layer::drawChara1()
 
 void Game02Layer::drawChara2()
 {
-    // ‹éŒ`
-    // xÀ•W, yÀ•W, width, height
+    // çŸ©å½¢
+    // xåº§æ¨™, yåº§æ¨™, width, height
     Rect rect = Rect(0, 0, 100, 200);
     auto chara2 = Sprite::create();
     chara2->setTextureRect(rect);
@@ -212,7 +212,7 @@ void Game02Layer::spawnBall()
     this->_ball->setPosition(ItemPos);
     this->addChild(this->_ball);
 
-    // ƒxƒWƒG‹Èü‚Éæ‚Áæ‚Á‚ÄƒAƒjƒ[ƒVƒ‡ƒ“‚³‚¹‚é
+    // ãƒ™ã‚¸ã‚¨æ›²ç·šã«ä¹—ã£å–ã£ã¦ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã•ã›ã‚‹
     ccBezierConfig config{};
     config.controlPoint_1 = ItemPos;
     config.controlPoint_2 = Vec2(winSizeW / 2, winSizeH * 1.5);
@@ -226,7 +226,7 @@ void Game02Layer::spawnBall()
     ac->setTag(1);
     this->_ball->runAction(ac);
 
-    //“G˜r‚Ì“®‚«
+    //æ•µè…•ã®å‹•ã
     auto ude_ac = Sequence::create(
         RotateBy::create(0.2f, 80.0f),
         RotateBy::create(0.2f, -80.0f),
@@ -234,11 +234,11 @@ void Game02Layer::spawnBall()
     this->_ude2->runAction(ude_ac);
 }
 
-//ƒ^ƒbƒ`‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 bool Game02Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     auto location = touch->getLocation();
    
-    //ƒQ[ƒ€ƒvƒŒƒC’†‚È‚ç—LŒø
+    //ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ä¸­ãªã‚‰æœ‰åŠ¹
     if (this->_game_state == 2) {
         auto eventListenerDisable = CallFunc::create([&]() {
             getEventDispatcher()->setEnabled(false);
@@ -287,12 +287,12 @@ bool Game02Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     return true;
 }
 
-//ƒ^ƒbƒ`‚ğ—£‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”  
+//ã‚¿ãƒƒãƒã‚’é›¢ã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°  
 void Game02Layer::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event) {
     
 }
 
-//ƒ^ƒbƒ`‚µ‚È‚ª‚çˆÚ“®’†‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãªãŒã‚‰ç§»å‹•ä¸­ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 void Game02Layer::onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 }

@@ -1,11 +1,11 @@
-#ifndef __Game01Layer_H__
+ï»¿#ifndef __Game01Layer_H__
 #define __Game01Layer_H__
 
 #include "Config.h"
 
 USING_NS_CC;
 
-//ƒQ[ƒ€‚Ìó‘Ô
+//ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹
 enum class GameState {
     DEFAULT = 0,
     COUNTDOWN,
@@ -20,7 +20,7 @@ enum kEnemyType {
     Green
 };
 
-//d‚È‚è‡
+//é‡ãªã‚Šé †
 enum class mainZOderList {
     BG = 0,
     ENEMY,
@@ -31,13 +31,13 @@ enum class mainZOderList {
 class Enemy : public Sprite
 {
 protected:
-    //ƒ^ƒCƒv‚É‚æ‚Á‚Ä“Ç‚İ‚Ş‰æ‘œ‚ğ•ÏX
+    //ã‚¿ã‚¤ãƒ—ã«ã‚ˆã£ã¦èª­ã¿è¾¼ã‚€ç”»åƒã‚’å¤‰æ›´
     const char* getImageFileName(kEnemyType _type);
     std::vector<int> _EnemyScore = { 100,300,500 };
 
 public:
-    //getter‚Æsetter‚ğ“¯‚Éì¬
-    //‚±‚Ìget~‚Æset~‚Åe‚©‚çƒAƒNƒZƒX‚·‚é‚±‚Æ‚ªo—ˆ‚é
+    //getterã¨setterã‚’åŒæ™‚ã«ä½œæˆ
+    //ã“ã®get~ã¨set~ã§è¦ªã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹
     CC_SYNTHESIZE(kEnemyType, type, Type);
 
     Enemy();

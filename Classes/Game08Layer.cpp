@@ -1,4 +1,4 @@
-#include "Game08Layer.h"
+ï»¿#include "Game08Layer.h"
 #include "SimpleAudioEngine.h"
 #include <iomanip>
 
@@ -26,22 +26,22 @@ bool Game08Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 100);
 
-    //ƒXƒRƒA‰æ‘œ‚ÍBatchNode‚Åˆ—
+    //ã‚¹ã‚³ã‚¢ç”»åƒã¯BatchNodeã§å‡¦ç†
     _scoreBatchNode = SpriteBatchNode::create("number.png");
     this->addChild(_scoreBatchNode);
 
-    //‰Šú’l
+    //åˆæœŸå€¤
     _isPlayerMove = false;
     _isPlayerMuki = 0;
     _score = 0;
 
-    //‰Šú•\¦
+    //åˆæœŸè¡¨ç¤º
     this->initDisp();
 
 
     this->scheduleUpdate();
 
-    //ƒ^ƒbƒ`ƒCƒxƒ“ƒg‚Ìİ’è
+    //ã‚¿ãƒƒãƒã‚¤ãƒ™ãƒ³ãƒˆã®è¨­å®š
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(Game08Layer::onTouchBegan, this);
     listener->onTouchEnded = CC_CALLBACK_2(Game08Layer::onTouchEnded, this);
@@ -52,32 +52,32 @@ bool Game08Layer::init()
 }
 
 void Game08Layer::initDisp() {
-    //”wŒi
+    //èƒŒæ™¯
     auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
     this->addChild(bg, 0);
 
-    //’n–Ê
+    //åœ°é¢
     auto floor = Sprite::create("floor.png");
     floor->setPosition(Vec2(winSizeCenterW, 30));
     this->addChild(floor);
     
-    //ƒXƒRƒA•\¦
+    //ã‚¹ã‚³ã‚¢è¡¨ç¤º
     this->viewScore();
 
-    //©‹@•\¦
+    //è‡ªæ©Ÿè¡¨ç¤º
     this->drawPlayer();
 }
 
-//ƒXƒRƒA‚ğ•\¦‚·‚é
+//ã‚¹ã‚³ã‚¢ã‚’è¡¨ç¤ºã™ã‚‹
 void Game08Layer::viewScore() {
-    //score‚Ì–¼‘O‚ª‚Â‚¢‚Ä‚¢‚éƒm[ƒh‚ğ‚·‚×‚Äíœ
+    //scoreã®åå‰ãŒã¤ã„ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã‚’ã™ã¹ã¦å‰Šé™¤
     this->enumerateChildren("score", [](Node* node) -> bool {
         auto action = RemoveSelf::create();
         node->runAction(action);
         return false;
         });
     
-    //•¶š—ñ‚É•ÏŠ·A10Œ…0‚Å–„‚ß‚é
+    //æ–‡å­—åˆ—ã«å¤‰æ›ã€10æ¡0ã§åŸ‹ã‚ã‚‹
     std::ostringstream oss;
     oss << std::setfill('0') << std::setw(10) << _score;
     std::string score = oss.str().c_str();
@@ -94,14 +94,14 @@ void Game08Layer::viewScore() {
     }
 }
 
-//©‹@‚Æ‘€ìƒ{ƒ^ƒ“‚Ì•\¦
+//è‡ªæ©Ÿã¨æ“ä½œãƒœã‚¿ãƒ³ã®è¡¨ç¤º
 void Game08Layer::drawPlayer() {
-    //©‹@‚Ì•\¦
+    //è‡ªæ©Ÿã®è¡¨ç¤º
     _player = Sprite::create("player.png");
     _player->setPosition(Vec2(winSizeCenterW, 150));
     this->addChild(_player, 1);
 
-    //‘€ìƒ{ƒ^ƒ“
+    //æ“ä½œãƒœã‚¿ãƒ³
     _btnL = Sprite::create("btnL.png");
     _btnL->setPosition(Vec2(100, winSizeCenterH));
     this->addChild(_btnL, 10);
@@ -114,7 +114,7 @@ void Game08Layer::drawPlayer() {
 
 void Game08Layer::update(float flame) {
     
-    //’[‚És‚Á‚Ä‚¢‚È‚¯‚ê‚Î
+    //ç«¯ã«è¡Œã£ã¦ã„ãªã‘ã‚Œã°
     /*if (_player->getPositionX() > 110
         && _player->getPositionX() < winSizeW - 110
         && _isPlayerMove) {*/
@@ -131,7 +131,7 @@ void Game08Layer::update(float flame) {
 
 }
 
-//ƒ^ƒbƒ`‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 bool Game08Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     Vec2 location = touch->getLocation();
 
@@ -152,13 +152,13 @@ bool Game08Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     return true;
 }
 
-//ƒ^ƒbƒ`‚ğ—£‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”  
+//ã‚¿ãƒƒãƒã‚’é›¢ã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°  
 void Game08Layer::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event) {
     auto location = touch->getLocation();
     _isPlayerMove = false;
 }
 
-//ƒm[ƒh‚ÌRECT‚ğ•Ô‚·
+//ãƒãƒ¼ãƒ‰ã®RECTã‚’è¿”ã™
 Rect Game08Layer::getRect(Node* node)
 {
     Point point = node->getPosition();

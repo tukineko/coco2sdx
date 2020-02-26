@@ -1,4 +1,4 @@
-#include "Game05Layer.h"
+ï»¿#include "Game05Layer.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -56,21 +56,21 @@ bool Game05Layer::init()
     return true;
 }
 
-//ƒ^ƒbƒ`‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 bool Game05Layer::onTouchBegan(Touch* touch, Event* event) {
     auto location = touch->getLocation();
 
     return true;
 }
 
-//ƒ^ƒbƒ`‚ğ—£‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”  
+//ã‚¿ãƒƒãƒã‚’é›¢ã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°  
 void Game05Layer::onTouchEnded(Touch* touch, Event* event) {
     
 
     
 }
 
-//ƒ^ƒbƒ`‚µ‚È‚ª‚çˆÚ“®’†‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãªãŒã‚‰ç§»å‹•ä¸­ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 void Game05Layer::onTouchMoved(Touch* touch, Event* event) {
     
 }

@@ -1,4 +1,4 @@
-#include "Game01Layer.h"
+ï»¿#include "Game01Layer.h"
 #include "SimpleAudioEngine.h"
 #include <iomanip>
 
@@ -26,24 +26,24 @@ bool Game01Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, (int)mainZOderList::TITLEBACK);
 
-    //ƒXƒRƒA‰æ‘œ‚ÍBatchNode‚Åˆ—
+    //ã‚¹ã‚³ã‚¢ç”»åƒã¯BatchNodeã§å‡¦ç†
     _scoreBatchNode = SpriteBatchNode::create("number.png");
     this->addChild(_scoreBatchNode);
 
-    //‰Šú‰»
+    //åˆæœŸåŒ–
     _score = 0;
     _timer = 20.0f;
     _game_state = (int)GameState::DEFAULT;
 
-    //‰Šú•\¦
+    //åˆæœŸè¡¨ç¤º
     this->initDisp();
 
-    //ˆê’èŠÔŠu‚ÅƒGƒlƒ~[‚ÌoŒ»
+    //ä¸€å®šé–“éš”ã§ã‚¨ãƒãƒŸãƒ¼ã®å‡ºç¾
     schedule(schedule_selector(Game01Layer::spawnEnemy), 0.4f);
 
     this->scheduleUpdate();
 
-    //ƒ^ƒbƒ`ƒCƒxƒ“ƒg‚Ìİ’è
+    //ã‚¿ãƒƒãƒã‚¤ãƒ™ãƒ³ãƒˆã®è¨­å®š
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(Game01Layer::onTouchBegan, this);
     listener->onTouchEnded = CC_CALLBACK_2(Game01Layer::onTouchEnded, this);
@@ -54,30 +54,30 @@ bool Game01Layer::init()
 }
 
 void Game01Layer::initDisp() {
-    //”wŒi
+    //èƒŒæ™¯
     auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
     this->addChild(bg, (int)mainZOderList::BG);
     
-    //ƒXƒRƒA•\¦
+    //ã‚¹ã‚³ã‚¢è¡¨ç¤º
     this->viewScore();
 
-    //§ŒÀŠÔ‚ğ•\¦
+    //åˆ¶é™æ™‚é–“ã‚’è¡¨ç¤º
     this->viewTimer();
 
-    //ƒQ[ƒ€ŠJn
+    //ã‚²ãƒ¼ãƒ é–‹å§‹
     this->GameStart();
 }
 
-//ƒXƒRƒA‚ğ•\¦‚·‚é
+//ã‚¹ã‚³ã‚¢ã‚’è¡¨ç¤ºã™ã‚‹
 void Game01Layer::viewScore() {
-    //score‚Ì–¼‘O‚ª‚Â‚¢‚Ä‚¢‚éƒm[ƒh‚ğ‚·‚×‚Äíœ
+    //scoreã®åå‰ãŒã¤ã„ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã‚’ã™ã¹ã¦å‰Šé™¤
     this->enumerateChildren("score", [](Node* node) -> bool {
         auto action = RemoveSelf::create();
         node->runAction(action);
         return false;
         });
     
-    //•¶š—ñ‚É•ÏŠ·A10Œ…0‚Å–„‚ß‚é
+    //æ–‡å­—åˆ—ã«å¤‰æ›ã€10æ¡0ã§åŸ‹ã‚ã‚‹
     std::ostringstream oss;
     oss << std::setfill('0') << std::setw(10) << _score;
     std::string score = oss.str().c_str();
@@ -94,9 +94,9 @@ void Game01Layer::viewScore() {
     }
 }
 
-//§ŒÀŠÔ‚ğ•\¦‚·‚é
+//åˆ¶é™æ™‚é–“ã‚’è¡¨ç¤ºã™ã‚‹
 void Game01Layer::viewTimer() {
-    //timer‚Ì–¼‘O‚ª‚Â‚¢‚Ä‚¢‚éƒm[ƒh‚ğ‚·‚×‚Äíœ
+    //timerã®åå‰ãŒã¤ã„ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã‚’ã™ã¹ã¦å‰Šé™¤
     this->enumerateChildren("timer", [](Node* node) -> bool {
         auto action = RemoveSelf::create();
         node->runAction(action);
@@ -184,12 +184,12 @@ void Game01Layer::GameStart()
     );
 }
 
-//“G‚ÌoŒ»
+//æ•µã®å‡ºç¾
 void Game01Layer::spawnEnemy(float frame) {
     if (_game_state == (int)GameState::GAME) {
         kEnemyType type = (kEnemyType)(rand() % 3);
         auto enemy = Enemy::create(type);
-        //cocos2dx‚ÌrandomŠÖ”‚ğg‚¤
+        //cocos2dxã®randomé–¢æ•°ã‚’ä½¿ã†
         int px = random(75, (int)winSizeW - 75);
         int py = random(75, (int)winSizeH - 200);
         //CCLOG("%d:%d", px, py);
@@ -209,12 +209,12 @@ void Game01Layer::spawnEnemy(float frame) {
                 );
         ac->setTag(1);
 
-        //oŒ»‚µ‚Ä‚©‚ç1•bŒã‚ÉÁ–Å
+        //å‡ºç¾ã—ã¦ã‹ã‚‰1ç§’å¾Œã«æ¶ˆæ»…
         enemy->runAction(ac);
     }
 }
 
-//ƒ^ƒbƒ`‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 bool Game01Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
 
     Vec2 location = touch->getLocation();
@@ -223,7 +223,7 @@ bool Game01Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
         return false;
     }
 
-    for (int i = 0; i < this->_enemys.size(); i++) {
+    for (int i = 0; i < (int)this->_enemys.size(); i++) {
         auto enemy = this->_enemys.at(i);
 
         Rect enemyRect = this->getRect(enemy);
@@ -245,7 +245,7 @@ bool Game01Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
 
             this->_enemys.erase(this->_enemys.begin() + i);
             
-            //ƒXƒRƒA‚ğXV
+            //ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°
             _score += enemy_point;
             this->viewScore();
         }
@@ -254,12 +254,12 @@ bool Game01Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     return true;
 }
 
-//ƒ^ƒbƒ`‚ğ—£‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”  
+//ã‚¿ãƒƒãƒã‚’é›¢ã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°  
 void Game01Layer::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event) {
     auto location = touch->getLocation();
 }
 
-//ƒm[ƒh‚ÌRECT‚ğ•Ô‚·
+//ãƒãƒ¼ãƒ‰ã®RECTã‚’è¿”ã™
 Rect Game01Layer::getRect(Node* node)
 {
     Point point = node->getPosition();
@@ -280,17 +280,17 @@ void Game01Layer::backTitleCallback() {
 }
 
 /***********************************************
-*ƒGƒlƒ~[ƒNƒ‰ƒX
+*ã‚¨ãƒãƒŸãƒ¼ã‚¯ãƒ©ã‚¹
 ***********************************************/
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^[
-//ì¬‚³‚ê‚é‚Æ‚«‚É‹N‚±‚éˆ—
-//:ˆÈ~‚Å”’l‚Ì‰Šú‰»‚ğ‚·‚é‚±‚Æ‚ªo—ˆ‚é
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼
+//ä½œæˆã•ã‚Œã‚‹ã¨ãã«èµ·ã“ã‚‹å‡¦ç†
+//:ä»¥é™ã§æ•°å€¤ã®åˆæœŸåŒ–ã‚’ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹
 Enemy::Enemy()
 {
 }
 
-//ƒfƒXƒgƒ‰ƒNƒ^[
-//‚±‚ÌƒNƒ‰ƒX‚ªI‚í‚é‚Æ‚«‚É‹N‚±‚éˆ—
+//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼
+//ã“ã®ã‚¯ãƒ©ã‚¹ãŒçµ‚ã‚ã‚‹ã¨ãã«èµ·ã“ã‚‹å‡¦ç†
 Enemy::~Enemy()
 {
 }

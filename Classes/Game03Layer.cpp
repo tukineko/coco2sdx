@@ -1,15 +1,15 @@
-#include "Game03Layer.h"
+ï»¿#include "Game03Layer.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
 Scene* Game03Layer::createScene()
 {
-    auto scene = Scene::createWithPhysics();  //•¨—ƒGƒ“ƒWƒ“‚ÌƒV[ƒ“‚Ìì¬
+    auto scene = Scene::createWithPhysics();  //ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚·ãƒ¼ãƒ³ã®ä½œæˆ
     auto layer = Game03Layer::create();
     scene->addChild(layer);
 
-    //gravity‚ğ•ÏXiŒ»À‚Ìê‡0,-980j
+    //gravityã‚’å¤‰æ›´ï¼ˆç¾å®Ÿã®å ´åˆ0,-980ï¼‰
     PhysicsWorld* world = scene->getPhysicsWorld();
     world->setGravity(Vec2(0, -980));
 
@@ -34,15 +34,15 @@ bool Game03Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 100);
 
-    // •¨—Õ“ËƒŠƒXƒi[
+    // ç‰©ç†è¡çªãƒªã‚¹ãƒŠãƒ¼
     auto phlistener = EventListenerPhysicsContact::create();
     phlistener->onContactBegin = CC_CALLBACK_1(Game03Layer::onContactBegin, this);
     getEventDispatcher()->addEventListenerWithSceneGraphPriority(phlistener, this);
 
-    //°
+    //åºŠ
     auto floor = this->addNewBoxAtPosition(this, Point(winSizeCenterW, 50), false, "floor.png");
 
-    //ƒ^ƒbƒ`ƒCƒxƒ“ƒg
+    //ã‚¿ãƒƒãƒã‚¤ãƒ™ãƒ³ãƒˆ
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(Game03Layer::onTouchBegan, this);
     listener->onTouchEnded = CC_CALLBACK_2(Game03Layer::onTouchEnded, this);
@@ -60,14 +60,14 @@ bool Game03Layer::onContactBegin(PhysicsContact& constact)
     return true;
 }
 
-// ŠÛ(•¨—ƒGƒ“ƒWƒ“)‚ğì¬
+// ä¸¸(ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³)ã‚’ä½œæˆ
 Sprite* Game03Layer::addNewCircleAtPosition(Node* parent, Point p, bool dynamic, const char* fileName) {
     CCLOG("-------addNewCircleAtPosition--------");
     Sprite* sprite = Sprite::create(fileName);
     auto material = PHYSICSBODY_MATERIAL_DEFAULT;
-    material.density = 1.0f; // –§“x
-    material.restitution = 1.0f; // ”½”­ŒW”
-    material.friction = 0.4f; // –€CŒW”
+    material.density = 1.0f; // å¯†åº¦
+    material.restitution = 1.0f; // åç™ºä¿‚æ•°
+    material.friction = 0.4f; // æ‘©æ“¦ä¿‚æ•°
     sprite->setPhysicsBody(PhysicsBody::createCircle((sprite->getContentSize().width / 2 - 1), material));
     sprite->getPhysicsBody()->setDynamic(dynamic);
     sprite->setPosition(p);
@@ -75,13 +75,13 @@ Sprite* Game03Layer::addNewCircleAtPosition(Node* parent, Point p, bool dynamic,
     return sprite;
 }
 
-// lŠp(•¨—ƒGƒ“ƒWƒ“)‚ğì¬
+// å››è§’(ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³)ã‚’ä½œæˆ
 Sprite* Game03Layer::addNewBoxAtPosition(Node* parent, Point p, bool dynamic, const char* fileName) {
     Sprite* sprite = Sprite::create(fileName);
     auto material = PHYSICSBODY_MATERIAL_DEFAULT;
-    material.density = 1.0f; // –§“x
-    material.restitution = 0.7f; // ”½”­ŒW”
-    material.friction = 0.0f; // –€CŒW”
+    material.density = 1.0f; // å¯†åº¦
+    material.restitution = 0.7f; // åç™ºä¿‚æ•°
+    material.friction = 0.0f; // æ‘©æ“¦ä¿‚æ•°
     sprite->setPhysicsBody(PhysicsBody::createBox(sprite->getContentSize(), material));
     sprite->getPhysicsBody()->setDynamic(dynamic);
     sprite->setPosition(p);
@@ -89,7 +89,7 @@ Sprite* Game03Layer::addNewBoxAtPosition(Node* parent, Point p, bool dynamic, co
     return sprite;
 }
 
-//ƒ^ƒbƒ`‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 bool Game03Layer::onTouchBegan(Touch* touch, Event* event) {
     auto location = touch->getLocation();
     CCLOG("-------onTouchBegan--------");
@@ -128,12 +128,12 @@ bool Game03Layer::onTouchBegan(Touch* touch, Event* event) {
     return true;
 }
 
-//ƒ^ƒbƒ`‚ğ—£‚µ‚½‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”  
+//ã‚¿ãƒƒãƒã‚’é›¢ã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°  
 void Game03Layer::onTouchEnded(Touch* touch, Event* event) {
 
 }
 
-//ƒ^ƒbƒ`‚µ‚È‚ª‚çˆÚ“®’†‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãªãŒã‚‰ç§»å‹•ä¸­ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 void Game03Layer::onTouchMoved(Touch* touch, Event* event) {
 
 }

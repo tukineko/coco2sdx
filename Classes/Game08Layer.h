@@ -1,4 +1,4 @@
-#ifndef __Game08Layer_H__
+ï»¿#ifndef __Game08Layer_H__
 #define __Game08Layer_H__
 
 #include "Config.h"
@@ -14,7 +14,7 @@ protected:
     Sprite* _btnL;
     Sprite* _btnR;
     bool _isPlayerMove = false;
-    int _isPlayerMuki = 0; //0‚Í¶Œü‚«
+    int _isPlayerMuki = 0; //0ã¯å·¦å‘ã
     
 public:
     static Scene* createScene();

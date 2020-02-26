@@ -11,7 +11,6 @@
 #include "Game06Layer.h"
 #include "Game07Layer.h"
 #include "Game08Layer.h"
-#include "Game09Layer.h"
 
 USING_NS_CC;
 
@@ -179,6 +178,7 @@ void TitleLayer::nextSceneCallback8() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game08Layer::createScene(), Color3B::WHITE));
 }
 
+#include "Game09Layer.h"
 void TitleLayer::nextSceneCallback9() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game09Layer::createScene(), Color3B::WHITE));
 }

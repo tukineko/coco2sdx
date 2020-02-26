@@ -1,4 +1,4 @@
-#include "Game04Layer.h"
+ï»¿#include "Game04Layer.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -29,7 +29,7 @@ bool Game04Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 100);
 
-    //ƒXƒ^[ƒg•¶Žš
+    //ã‚¹ã‚¿ãƒ¼ãƒˆæ–‡å­—
     _moveNode = Sprite::create("txt_start.png");
     _moveNode->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     this->addChild(_moveNode);
@@ -44,7 +44,7 @@ bool Game04Layer::init()
     return true;
 }
 
-//ƒ^ƒbƒ`‚µ‚½Žž‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 bool Game04Layer::onTouchBegan(Touch* touch, Event* event) {
     auto location = touch->getLocation();
 
@@ -54,14 +54,14 @@ bool Game04Layer::onTouchBegan(Touch* touch, Event* event) {
     return true;
 }
 
-//ƒ^ƒbƒ`‚ð—£‚µ‚½Žž‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”  
+//ã‚¿ãƒƒãƒã‚’é›¢ã—ãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°  
 void Game04Layer::onTouchEnded(Touch* touch, Event* event) {
     
 
     
 }
 
-//ƒ^ƒbƒ`‚µ‚È‚ª‚çˆÚ“®’†‚ÉŒÄ‚Ño‚³‚ê‚éŠÖ”
+//ã‚¿ãƒƒãƒã—ãªãŒã‚‰ç§»å‹•ä¸­ã«å‘¼ã³å‡ºã•ã‚Œã‚‹é–¢æ•°
 void Game04Layer::onTouchMoved(Touch* touch, Event* event) {
     auto diff = _moveNode->getPosition() - touch->getLocation();
     auto angle = CC_RADIANS_TO_DEGREES(atan2(diff.x, diff.y));

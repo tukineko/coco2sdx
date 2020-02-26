@@ -1,4 +1,4 @@
-#ifndef __Game04Layer_H__
+﻿#ifndef __Game04Layer_H__
 #define __Game04Layer_H__
 
 #include "Config.h"

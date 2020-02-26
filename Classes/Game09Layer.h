@@ -1,4 +1,4 @@
-#ifndef __Game09Layer_H__
+﻿#ifndef __Game09Layer_H__
 #define __Game09Layer_H__
 
 #include "Config.h"
@@ -14,7 +14,7 @@ enum class kChara {
 class Chara : public Sprite
 {
 protected:
-    //�^�C�v�ɂ���ēǂݍ��މ摜��ύX
+    //タイプによって読み込む画像を変更
     const char* getImageFileName(kChara _type);
     
 public:
@@ -45,9 +45,6 @@ public:
     virtual bool init();
     CREATE_FUNC(Game09Layer);
     
-    
-    void update(float frame);
-
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchMoved(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);

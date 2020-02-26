@@ -1,4 +1,4 @@
-#ifndef __Game02Layer_H__
+ï»¿#ifndef __Game02Layer_H__
 #define __Game02Layer_H__
 
 #include "Config.h"
@@ -15,10 +15,10 @@ class Game02Layer : public Layer
 {
 protected:
     
-    //ƒQ[ƒ€‚Ìó‘Ô
+    //ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹
     int _game_state;
 
-    int _ball_status = 0; //0F“GUŒ‚
+    int _ball_status = 0; //0ï¼šæ•µæ”»æ’ƒ
     int _score = 0;
 
     Sprite* _ude1;
