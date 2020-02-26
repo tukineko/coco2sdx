@@ -152,21 +152,21 @@ void Game01Layer::GameStart()
 
     auto ac = Sequence::create(
         Spawn::create(
-            CCEaseOut::create(MoveBy::create(0.3f, Vec2(0, 100)), 3),
-            CCEaseOut::create(FadeIn::create(0.5f), 3),
+            EaseOut::create(MoveBy::create(0.3f, Vec2(0, 100)), 3),
+            EaseOut::create(FadeIn::create(0.5f), 3),
             nullptr
         ),
-        CCEaseOut::create(FadeOut::create(0.1f), 3),
+        EaseOut::create(FadeOut::create(0.1f), 3),
         nullptr);
 
     auto ac2 = Sequence::create(
         FadeIn::create(0.0f),
         Spawn::create(
-            CCEaseIn::create(ScaleTo::create(0.3f, 2.0f), 3),
-            CCEaseIn::create(FadeOut::create(0.3f), 3),
+            EaseIn::create(ScaleTo::create(0.3f, 2.0f), 3),
+            EaseIn::create(FadeOut::create(0.3f), 3),
             nullptr
         ),
-        CCEaseOut::create(FadeOut::create(0.1f), 3),
+        EaseOut::create(FadeOut::create(0.1f), 3),
         CallFunc::create([this]() {
             _game_state = (int)GameState::GAME;
     }),

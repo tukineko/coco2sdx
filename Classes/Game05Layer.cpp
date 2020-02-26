@@ -22,7 +22,7 @@ bool Game05Layer::init()
     }
     CCLOG("----------------Game05Layer::init()----------------");
     
-    auto labelBtnLabel01 = LabelTTF::create("Back to Title", "fonts/Marker Felt.ttf", 24);
+    auto labelBtnLabel01 = Label::createWithSystemFont("Back to Title", "Arial", 36);
     auto labelItem01 = MenuItemLabel::create(labelBtnLabel01, CC_CALLBACK_0(Game05Layer::backTitleCallback, this));
     labelItem01->setPosition(Vec2(winSizeW - 100, 30));
     auto menu = Menu::create(labelItem01, nullptr);

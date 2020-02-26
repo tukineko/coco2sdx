@@ -23,7 +23,7 @@ bool Game02Layer::init()
         return false;
     }
 
-    auto labelBtnLabel01 = LabelTTF::create("Back to Title", "fonts/Marker Felt.ttf", 24);
+    auto labelBtnLabel01 = Label::createWithSystemFont("Back to Title", "Arial", 36);
     auto labelItem01 = MenuItemLabel::create(labelBtnLabel01, CC_CALLBACK_0(Game02Layer::backTitleCallback, this));
     labelItem01->setPosition(Vec2(winSizeW - 100, 30));
     auto menu = Menu::create(labelItem01, nullptr);
@@ -73,21 +73,6 @@ void Game02Layer::GameOver() {
     gameover->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     this->addChild(gameover);
 
-    // ラベルを生成
-    //Ver3.x CC_CALLBACK_1 マクロ（引数が１つ）にすること
-    auto labelBtnLabel01 = LabelTTF::create("Back to Title", "fonts/Marker Felt.ttf", 48);
-    // ラベルメニューアクション先の設定
-    auto labelItem01 = MenuItemLabel::create(labelBtnLabel01, CC_CALLBACK_0(Game02Layer::nextSceneCallback, this));
-    // ラベルの設置
-    labelItem01->setPosition(Vec2(winSizeCenterW, 200));
-
-    // メニューを作成 自動解放オブジェクト
-    auto menu = Menu::create(labelItem01, nullptr);
-
-    menu->setPosition(Point::ZERO);
-    // メニューを追加
-    this->addChild(menu);
-
 }
 
 void Game02Layer::GameStart()
@@ -114,21 +99,21 @@ void Game02Layer::GameStart()
 
     auto ac = Sequence::create(
         Spawn::create(
-            CCEaseOut::create(MoveBy::create(0.3f, Vec2(0, 100)), 3),
-            CCEaseOut::create(FadeIn::create(0.5f), 3),
+            EaseOut::create(MoveBy::create(0.3f, Vec2(0, 100)), 3),
+            EaseOut::create(FadeIn::create(0.5f), 3),
             nullptr
             ),
-        CCEaseOut::create(FadeOut::create(0.1f), 3),
+        EaseOut::create(FadeOut::create(0.1f), 3),
         nullptr);
 
     auto ac2 = Sequence::create(
         FadeIn::create(0.0f),
         Spawn::create(
-            CCEaseIn::create(ScaleTo::create(0.3f, 2.0f), 3),
-            CCEaseIn::create(FadeOut::create(0.3f), 3),
+            EaseIn::create(ScaleTo::create(0.3f, 2.0f), 3),
+            EaseIn::create(FadeOut::create(0.3f), 3),
             nullptr
         ),
-        CCEaseOut::create(FadeOut::create(0.1f), 3),
+        EaseOut::create(FadeOut::create(0.1f), 3),
         CallFunc::create([this]() {
             this->_game_state = 2;
             this->spawnBall();

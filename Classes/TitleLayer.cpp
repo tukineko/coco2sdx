@@ -3,15 +3,6 @@
 #include "TitleLayer.h"
 #include "SimpleAudioEngine.h"
 
-#include "Game01Layer.h"
-#include "Game02Layer.h"
-#include "Game03Layer.h"
-#include "Game04Layer.h"
-#include "Game05Layer.h"
-#include "Game06Layer.h"
-#include "Game07Layer.h"
-#include "Game08Layer.h"
-
 USING_NS_CC;
 
 Scene* TitleLayer::createScene()
@@ -145,35 +136,42 @@ bool TitleLayer::init()
 
     return true;
 }
-
+#include "Game01Layer.h"
 void TitleLayer::nextSceneCallback() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game01Layer::createScene(), Color3B::WHITE));
 }
 
+#include "Game02Layer.h"
 void TitleLayer::nextSceneCallback2() {
     Director::getInstance()->replaceScene(TransitionFadeTR::create(1.0f, Game02Layer::createScene()));
 }
 
+#include "Game03Layer.h"
 void TitleLayer::nextSceneCallback3() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game03Layer::createScene(), Color3B::WHITE));
 }
 
+#include "Game04Layer.h"
 void TitleLayer::nextSceneCallback4() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game04Layer::createScene(), Color3B::WHITE));
 }
 
+#include "Game05Layer.h"
 void TitleLayer::nextSceneCallback5() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game05Layer::createScene(), Color3B::WHITE));
 }
 
+#include "Game06Layer.h"
 void TitleLayer::nextSceneCallback6() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game06Layer::createScene(), Color3B::WHITE));
 }
 
+#include "Game07Layer.h"
 void TitleLayer::nextSceneCallback7() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game07Layer::createScene(), Color3B::WHITE));
 }
 
+#include "Game08Layer.h"
 void TitleLayer::nextSceneCallback8() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game08Layer::createScene(), Color3B::WHITE));
 }
