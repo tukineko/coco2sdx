@@ -2,6 +2,7 @@
 #define __Config_H__
 
 #include "cocos2d.h"
+#include "CommonUtile.h"
 
 #define VisibleSize Director::getInstance()->getVisibleSize()
 #define winSizeW VisibleSize.width

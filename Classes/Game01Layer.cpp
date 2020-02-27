@@ -2,6 +2,14 @@
 #include "SimpleAudioEngine.h"
 #include <iomanip>
 
+//重なり順
+enum class mainZOderList {
+    BG = 0,
+    ENEMY,
+    SCORE,
+    TITLEBACK,
+};
+
 Scene* Game01Layer::createScene()
 {
     Scene* scene = Scene::create();

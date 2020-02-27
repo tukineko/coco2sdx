@@ -8,7 +8,9 @@ USING_NS_CC;
 class TitleLayer : public Layer
 {
 protected:
-    
+    Sprite* _chara;
+    float _count = 0;
+
 public:
     static Scene* createScene();
     virtual bool init();
@@ -28,6 +30,8 @@ public:
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
     void onTouchMoved(Touch* touch, Event* event);
+
+    void update(float dt);
 };
 
 #endif // __TitleLayer_H__

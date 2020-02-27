@@ -20,14 +20,6 @@ enum kEnemyType {
     Green
 };
 
-//重なり順
-enum class mainZOderList {
-    BG = 0,
-    ENEMY,
-    SCORE,
-    TITLEBACK,
-};
-
 class Enemy : public Sprite
 {
 protected:

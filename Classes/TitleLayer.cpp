@@ -3,7 +3,16 @@
 #include "TitleLayer.h"
 #include "SimpleAudioEngine.h"
 
+#define PI 3.14159265358979323846
+
 USING_NS_CC;
+
+enum class mainZOderList{
+    BG = 0,
+    CHARA,
+    TITLE,
+    MENU
+};
 
 Scene* TitleLayer::createScene()
 {
@@ -21,39 +30,20 @@ bool TitleLayer::init()
     }
     CCLOG("----------------TitleLayer::init()----------------");
 
-    //グリッド線
-    /*auto render = RenderTexture::create(winSizeW, winSizeH);
-    render->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
-    this->addChild(render, 999);
-    
-    render->begin();
-    auto line = DrawNode::create();
-    line->retain();
-    for (int x = 0; x < 10; x++) {
-        line->drawSegment(Vec2(100 * x, 0), Vec2(100 * x, winSizeH), 1.0f, Color4F::RED);
-        line->Node::visit();
-    }
-    for (int y = 0; y < 7; y++) {
-        line->drawSegment(Vec2(0, 100 * y), Vec2(winSizeW, 100 * y), 1.0f, Color4F::RED);
-        line->Node::visit();
-    }
-    render->end();*/
+    //グリッドを引く
+    CommonUtile::drawGrid(this, Color4F::BLUE, 100, 1.0f);
 
     //背景
     auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
-    this->addChild(bg);
+    this->addChild(bg, (int)mainZOderList::BG);
 
     //タイトル
     auto title = Sprite::create("title.png");
     title->setPosition(Vec2(winSizeCenterW, winSizeH - 150));
-    this->addChild(title, 10);
-
-
-
-    //メニューボタン（画像）
-    /*auto mItem1 = MenuItemImage::create("btn.png", "btnOn.png", CC_CALLBACK_0(TitleLayer::nextSceneCallback, this));
-    mItem1->setPosition(Vec2(winSizeW / 5, winSizeH - 100));*/
-
+    title->setOpacity(0);
+    this->addChild(title, (int)mainZOderList::TITLE);
+    title->runAction(EaseOut::create(FadeIn::create(1.0f), 1.0f));
+    
     //メニューボタン（テキスト）
     int fontsize = 36;
     int leftPos = 100;
@@ -122,7 +112,26 @@ bool TitleLayer::init()
     //メニューを作成
     auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, mItem9, mItem10, NULL);
     menu->setPosition(Point::ZERO);
-    this->addChild(menu, 10);
+    menu->setOpacity(0);
+    this->addChild(menu, (int)mainZOderList::MENU);
+    menu->runAction(
+        Sequence::create(
+            DelayTime::create(1.2f),
+            Spawn::create(
+                FadeIn::create(0.5f),
+                MoveBy::create(0.5f, Vec2(0, 10)),
+                nullptr
+            ),
+            nullptr
+        )   
+    );
+
+    //キャラクター
+    _chara = Sprite::create("player.png");
+    _chara->setPosition(Vec2(winSizeW, winSizeCenterH));
+    this->addChild(_chara, (int)mainZOderList::CHARA);
+    
+    this->scheduleUpdate();
 
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(TitleLayer::onTouchBegan, this);
@@ -221,4 +230,13 @@ void TitleLayer::onTouchMoved(Touch* touch, Event* event) {
     particle->setAutoRemoveOnFinish(true);
     // パーティクルを配置
     this->addChild(particle, 100);
+}
+
+void TitleLayer::update(float dt) {
+    //sin(PI * 2 / 240 * Count) * 200
+    //CCLOG("%f", sin(CC_DEGREES_TO_RADIANS(180) * dt));
+    _count += dt;
+    CCLOG("%f", sin(PI * 2 * _count));
+    _chara->setPosition(Vec2(_chara->getPositionX() - 250 * dt, _chara->getPositionY() + sin(PI * 2 * _count)));
+
 }
