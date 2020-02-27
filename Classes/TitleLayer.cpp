@@ -49,6 +49,7 @@ bool TitleLayer::init()
     this->addChild(title, 10);
 
 
+
     //メニューボタン（画像）
     /*auto mItem1 = MenuItemImage::create("btn.png", "btnOn.png", CC_CALLBACK_0(TitleLayer::nextSceneCallback, this));
     mItem1->setPosition(Vec2(winSizeW / 5, winSizeH - 100));*/
@@ -112,20 +113,16 @@ bool TitleLayer::init()
     mItem9->setAnchorPoint(Point::ZERO);
     mItem9->setColor(Color3B::BLUE);
 
+    auto labelBtnLabel10 = Label::createWithSystemFont("演出etc", "Arial", fontsize);
+    auto mItem10 = MenuItemLabel::create(labelBtnLabel10, CC_CALLBACK_0(TitleLayer::nextSceneCallback10, this));
+    mItem10->setPosition(Vec2(rightPos, winSizeH - 400));
+    mItem10->setAnchorPoint(Point::ZERO);
+    mItem10->setColor(Color3B::BLUE);
+
     //メニューを作成
-    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, mItem9, NULL);
+    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, mItem9, mItem10, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 10);
-
-    //演出
-    auto bg2 = Sprite::create("bg01.png");
-    bg2->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
-    bg2->setScale(2.5f);
-    this->addChild(bg2, 5);
-    auto ac = RepeatForever::create(
-        RotateBy::create(10.0f, 360.0f)
-    );
-    bg2->runAction(ac);
 
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(TitleLayer::onTouchBegan, this);
@@ -179,6 +176,11 @@ void TitleLayer::nextSceneCallback8() {
 #include "Game09Layer.h"
 void TitleLayer::nextSceneCallback9() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game09Layer::createScene(), Color3B::WHITE));
+}
+
+#include "Game10Layer.h"
+void TitleLayer::nextSceneCallback10() {
+    Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game10Layer::createScene(), Color3B::WHITE));
 }
 
 //タッチした時に呼び出される関数
