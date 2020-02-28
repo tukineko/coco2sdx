@@ -5,25 +5,35 @@
 
 USING_NS_CC;
 
+enum class kTagList {
+    FLOOR = 0,
+    BLOCK,
+    OUTLINE,
+};
+
 class Game03Layer : public Layer
 {
-private:
-    
 protected:
-    
+    SpriteBatchNode* _scoreBatchNode;
+
+    int _game_state = 0;
+    int _score = 0;
 public:
     static Scene* createScene();
     CREATE_FUNC(Game03Layer);
     virtual bool init();
 
-    bool onContactBegin(PhysicsContact& constact);
+    bool onContactBegin(PhysicsContact& contact);
+
+    void initDisp();
+    void viewScore();
+    void addObject(Node* parent, Vec2 point);
+    void GameOver();
 
     Sprite* addNewCircleAtPosition(Node* parent, Point p, bool dynamic, const char* fileName);
     Sprite* addNewBoxAtPosition(Node* parent, Point p, bool dynamic, const char* fileName);
 
     bool onTouchBegan(Touch* touch, Event* event);
-    void onTouchEnded(Touch* touch, Event* event);
-    void onTouchMoved(Touch* touch, Event* event);
 
     void backTitleCallback();
 };

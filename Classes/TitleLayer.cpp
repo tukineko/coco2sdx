@@ -31,7 +31,7 @@ bool TitleLayer::init()
     CCLOG("----------------TitleLayer::init()----------------");
 
     //グリッドを引く
-    CommonUtile::drawGrid(this, Color4F::BLUE, 100, 1.0f);
+    //CommonUtile::drawGrid(this, Color4F::BLUE, 100, 1.0f);
 
     //背景
     auto bg = LayerColor::create(Color4B::WHITE, winSizeW, winSizeH);
@@ -61,7 +61,7 @@ bool TitleLayer::init()
     mItem2->setAnchorPoint(Point::ZERO);
     mItem2->setColor(Color3B::BLUE);
 
-    auto labelBtnLabel3 = Label::createWithSystemFont("物理エンジンで丸を落とすだけ", "Arial", fontsize);
+    auto labelBtnLabel3 = Label::createWithSystemFont("物理エンジンで物体を落とすだけ", "Arial", fontsize);
     auto mItem3 = MenuItemLabel::create(labelBtnLabel3, CC_CALLBACK_0(TitleLayer::nextSceneCallback3, this));
     mItem3->setPosition(Vec2(leftPos, winSizeH - 450));
     mItem3->setAnchorPoint(Point::ZERO);
