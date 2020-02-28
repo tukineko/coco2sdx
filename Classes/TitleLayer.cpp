@@ -128,7 +128,8 @@ bool TitleLayer::init()
 
     //キャラクター
     _chara = Sprite::create("player.png");
-    _chara->setPosition(Vec2(winSizeW, winSizeCenterH));
+    _chara->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    _chara->setFlippedX(true);
     this->addChild(_chara, (int)mainZOderList::CHARA);
     
     this->scheduleUpdate();
@@ -233,10 +234,24 @@ void TitleLayer::onTouchMoved(Touch* touch, Event* event) {
 }
 
 void TitleLayer::update(float dt) {
-    //sin(PI * 2 / 240 * Count) * 200
-    //CCLOG("%f", sin(CC_DEGREES_TO_RADIANS(180) * dt));
-    _count += dt;
-    CCLOG("%f", sin(PI * 2 * _count));
-    _chara->setPosition(Vec2(_chara->getPositionX() - 250 * dt, _chara->getPositionY() + sin(PI * 2 * _count)));
+    
+    //キャラクターの動き
+    _py += dt;
+    auto cPosX = _chara->getPositionX() + _px;
+    auto cPosY = _chara->getPositionY() + sin(PI * 1.5 * _py);
+    _chara->setPosition(Vec2(cPosX, cPosY));
+    if (cPosX < 103 || cPosX > winSizeW -103) {
+        this->ChangeCharaDirection();
+    }
+    
+}
 
+void TitleLayer::ChangeCharaDirection() {
+    _px = -_px;
+    if (_px > 0) {
+        _chara->setFlippedX(true);
+    }
+    else {
+        _chara->setFlippedX(false);
+    }
 }

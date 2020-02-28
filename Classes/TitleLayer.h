@@ -10,6 +10,8 @@ class TitleLayer : public Layer
 protected:
     Sprite* _chara;
     float _count = 0;
+    float _px = 2.5f;
+    float _py = 0;
 
 public:
     static Scene* createScene();
@@ -32,6 +34,8 @@ public:
     void onTouchMoved(Touch* touch, Event* event);
 
     void update(float dt);
+
+    void ChangeCharaDirection();
 };
 
 #endif // __TitleLayer_H__
