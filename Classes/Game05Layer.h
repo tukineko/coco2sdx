@@ -8,15 +8,16 @@ USING_NS_CC;
 class Game05Layer : public Layer
 {
 protected:
-    
+    Sprite* _text;
+    float _speed = 1.0f;
+
 public:
     static Scene* createScene();
     virtual bool init();
     CREATE_FUNC(Game05Layer);
 
-    bool onTouchBegan(Touch* touch, Event* event);
-    void onTouchEnded(Touch* touch, Event* event);
-    void onTouchMoved(Touch* touch, Event* event);
+    void update(float dt);
+
 
     void backTitleCallback();
 };

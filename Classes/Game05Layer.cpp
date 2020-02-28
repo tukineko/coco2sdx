@@ -29,50 +29,21 @@ bool Game05Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 100);
 
-    auto cameraLayer = Layer::create();
-    auto rotation3D = cameraLayer->getRotation3D();
-    rotation3D.x = -35;
-    cameraLayer->setRotation3D(rotation3D);
-    addChild(cameraLayer);
-
-    auto node = Sprite::create("puzzle1.png");
-    node->setPosition(Vec2(winSizeCenterW, winSizeH));
-    node->setRotation3D(cameraLayer->getRotation3D());
-    cameraLayer->addChild(node);
-    node->runAction(MoveTo::create(6.0f, Vec2(winSizeCenterW, 0)));
-
-    auto node2 = Sprite::create("HelloWorld.png");
-    node2->setPosition(Vec2(winSizeCenterW / 2, winSizeCenterH));
-    node2->setRotation3D(cameraLayer->getRotation3D());
-    cameraLayer->addChild(node2);
-
-    auto listener = EventListenerTouchOneByOne::create();
-    listener->onTouchBegan = CC_CALLBACK_2(Game05Layer::onTouchBegan, this);
-    listener->onTouchEnded = CC_CALLBACK_2(Game05Layer::onTouchEnded, this);
-    listener->onTouchMoved = CC_CALLBACK_2(Game05Layer::onTouchMoved, this);
-    auto dispatcher = Director::getInstance()->getEventDispatcher();
-    dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+    //スターウォーズ風
+    _text = Sprite::create("text.png");
+    _text->setRotation3D(cocos2d::Vertex3F(-80.0, 0.0, 0.0));
+    //_text->setPosition(Vec2(winSizeCenterW, 0 - text->getContentSize().height / 2));
+    _text->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    this->addChild(_text);
+    
+    this->scheduleUpdate();
 
     return true;
 }
 
-//タッチした時に呼び出される関数
-bool Game05Layer::onTouchBegan(Touch* touch, Event* event) {
-    auto location = touch->getLocation();
-
-    return true;
-}
-
-//タッチを離した時に呼び出される関数  
-void Game05Layer::onTouchEnded(Touch* touch, Event* event) {
-    
-
-    
-}
-
-//タッチしながら移動中に呼び出される関数
-void Game05Layer::onTouchMoved(Touch* touch, Event* event) {
-    
+void Game05Layer::update(float dt) {
+   
+    _text->setPositionZ(_text->getPositionZ() - _speed);
 }
 
 #include "TitleLayer.h"

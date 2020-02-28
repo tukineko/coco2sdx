@@ -73,7 +73,7 @@ bool TitleLayer::init()
     mItem4->setAnchorPoint(Point::ZERO);
     mItem4->setColor(Color3B::BLUE);
 
-    auto labelBtnLabel5 = Label::createWithSystemFont("疑似3Dっぽく見せかけ", "Arial", fontsize);
+    auto labelBtnLabel5 = Label::createWithSystemFont("スターウォーズOP風", "Arial", fontsize);
     auto mItem5 = MenuItemLabel::create(labelBtnLabel5, CC_CALLBACK_0(TitleLayer::nextSceneCallback5, this));
     mItem5->setPosition(Vec2(leftPos, winSizeH - 550));
     mItem5->setAnchorPoint(Point::ZERO);
