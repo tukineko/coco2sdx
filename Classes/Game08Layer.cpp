@@ -114,19 +114,22 @@ void Game08Layer::drawPlayer() {
 
 void Game08Layer::update(float flame) {
     
-    //端に行っていなければ
-    /*if (_player->getPositionX() > 110
-        && _player->getPositionX() < winSizeW - 110
-        && _isPlayerMove) {*/
     if(_isPlayerMove){
 
         if (_isPlayerMuki == 0) {
-            _player->setPosition(Vec2(this->_player->getPositionX() - 250 * flame, _player->getPositionY()));
+            _player->setPosition(Vec2(this->_player->getPositionX() - _PlayerSpeed, _player->getPositionY()));
         }
         else {
-            _player->setPosition(Vec2(this->_player->getPositionX() + 250 * flame, _player->getPositionY()));
+            _player->setPosition(Vec2(this->_player->getPositionX() + _PlayerSpeed, _player->getPositionY()));
         }
         
+        //画面外に行かないように
+        if (_player->getPositionX() < 110) {
+            _player->setPosition(Vec2(110, _player->getPositionY()));
+        }
+        if (_player->getPositionX() > winSizeW - 110) {
+            _player->setPosition(Vec2(winSizeW - 110, _player->getPositionY()));
+        }
     }
 
 }

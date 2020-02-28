@@ -15,6 +15,7 @@ protected:
     Sprite* _btnR;
     bool _isPlayerMove = false;
     int _isPlayerMuki = 0; //0は左向き
+    float _PlayerSpeed = 5.0f;
     
 public:
     static Scene* createScene();
