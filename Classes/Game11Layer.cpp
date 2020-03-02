@@ -27,8 +27,6 @@ bool Game11Layer::init()
 
     this->initDisp();
 
-    this->addMame();
-
     //タッチイベントの設定
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(Game11Layer::onTouchBegan, this);
@@ -47,18 +45,28 @@ void Game11Layer::initDisp() {
     _btn02 = Sprite::create("game11/btn02.png");
     _btn02->setPosition(Vec2(winSizeCenterW + 450, 200));
     this->addChild(_btn02);
-}
 
-//豆の追加
-void Game11Layer::addMame() {
     //豆を表示
-    auto mame = Mame::create();
-    mame->setPosition(Vec2(winSizeCenterW - 100, winSizeH));
-    this->addChild(mame);
-    _mameList.pushBack(mame);
+    this->setStage(Node::create());
+    for (int i = 0; i < 5; i++) {
+        auto mame = Mame::create();
+        mame->setMamePosition(Vec2(0, i));
+        this->addChild(mame);
+        this->addMame(mame);
+    }
+
 }
 
-//ボタン1を押したときの処理
+void Game11Layer::addMame(Mame* mame) {
+    //豆リストに豆を追加
+    _mameList.pushBack(mame);
+    //_stageノードに豆を追加
+    //_stage->addChild(mame);
+    //位置を調整する
+    mame->adjustPosition();
+    
+}
+
 void Game11Layer::ClickBtn01() {
     _btn01_state = true;
     auto ac = Sequence::create(
@@ -108,9 +116,40 @@ Mame::~Mame()
 
 bool Mame::init()
 {
-    //豆をランダム
-    _mameType = mameType::OK;
-    if (!Sprite::initWithFile("game11/mame.png")) return false;
+    // 乱数発生器の初期化
+    std::random_device rdev;
+    auto engine = std::mt19937(rdev());
+    auto dist = std::uniform_int_distribution<>(0, (int)(Mame::mameType::COUNT) - 1);
+
+    // 豆をランダムに1つ選ぶ
+    auto mame = dist(engine);
+    _mameType = static_cast<Mame::mameType>(mame);
+
+    if (!Sprite::initWithFile("game11/mame.png", Rect(Mame::getSize() * mame, 0, Mame::getSize(), Mame::getSize()))) return false;
 
     return true;
+}
+
+Vec2 Mame::convertToStageSpace(const Vec2& gridPosition)
+{
+    return std::move((gridPosition + Vec2::ONE * 0.5) * Mame::getSize());
+}
+
+Vec2 Mame::convertToGridSpace(const Vec2& stagePosition)
+{
+    auto x = floor(stagePosition.x / Mame::getSize());
+    auto y = floor(stagePosition.y / Mame::getSize());
+    return std::move(Vec2(x, y));
+}
+
+void Mame::setMamePosition(const Vec2& position)
+{
+    _mamePosition = position;
+}
+
+void Mame::adjustPosition()
+{
+    auto position = _mamePosition;
+    // _mamePositionを元にpositionを設定する
+    this->setPosition(Mame::convertToStageSpace(position));
 }
