@@ -109,8 +109,14 @@ bool TitleLayer::init()
     mItem10->setAnchorPoint(Point::ZERO);
     mItem10->setColor(Color3B::BLUE);
 
+    auto labelBtnLabel11 = Label::createWithSystemFont("大豆でなにか", "Arial", fontsize);
+    auto mItem11 = MenuItemLabel::create(labelBtnLabel11, CC_CALLBACK_0(TitleLayer::nextSceneCallback11, this));
+    mItem11->setPosition(Vec2(rightPos, winSizeH - 450));
+    mItem11->setAnchorPoint(Point::ZERO);
+    mItem11->setColor(Color3B::BLUE);
+
     //メニューを作成
-    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, mItem9, mItem10, NULL);
+    auto menu = Menu::create(mItem1, mItem2, mItem3, mItem4, mItem5, mItem6, mItem7, mItem8, mItem9, mItem10, mItem11, NULL);
     menu->setPosition(Point::ZERO);
     menu->setOpacity(0);
     this->addChild(menu, (int)mainZOderList::MENU);
@@ -191,6 +197,11 @@ void TitleLayer::nextSceneCallback9() {
 #include "Game10Layer.h"
 void TitleLayer::nextSceneCallback10() {
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game10Layer::createScene(), Color3B::WHITE));
+}
+
+#include "Game11Layer.h"
+void TitleLayer::nextSceneCallback11() {
+    Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Game11Layer::createScene(), Color3B::WHITE));
 }
 
 //タッチした時に呼び出される関数
