@@ -48,9 +48,6 @@ bool Game04Layer::init()
 bool Game04Layer::onTouchBegan(Touch* touch, Event* event) {
     auto location = touch->getLocation();
 
-    auto diff = _moveNode->getPosition() - touch->getLocation();
-    _prevAngle = CC_RADIANS_TO_DEGREES(atan2(diff.x, diff.y));
-
     return true;
 }
 
@@ -63,11 +60,16 @@ void Game04Layer::onTouchEnded(Touch* touch, Event* event) {
 
 //タッチしながら移動中に呼び出される関数
 void Game04Layer::onTouchMoved(Touch* touch, Event* event) {
-    auto diff = _moveNode->getPosition() - touch->getLocation();
+    Vec2 location = touch->getLocation();
+    Vec2 preLocation = touch->getPreviousLocation();
+
+    auto diff = _moveNode->getPosition() - location;
+    auto diff2 = _moveNode->getPosition() - preLocation;
     auto angle = CC_RADIANS_TO_DEGREES(atan2(diff.x, diff.y));
-    _moveNode->setRotation(_moveNode->getRotation() + (angle - _prevAngle));
-    _prevAngle = angle;
-    
+    auto angle2 = CC_RADIANS_TO_DEGREES(atan2(diff2.x, diff2.y));
+    //CCLOG("%f", (angle - angle2));
+    _moveNode->setRotation(_moveNode->getRotation() + (angle - angle2));
+    CCLOG("%f", _moveNode->getRotation());
 }
 
 #include "TitleLayer.h"
