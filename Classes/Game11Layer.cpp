@@ -27,6 +27,8 @@ bool Game11Layer::init()
 
     this->initDisp();
 
+    this->scheduleUpdate();
+
     //タッチイベントの設定
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(Game11Layer::onTouchBegan, this);
@@ -34,6 +36,15 @@ bool Game11Layer::init()
     dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
+}
+
+void Game11Layer::update(float dt) {
+    // 全豆に対して落下を判定する
+    for (auto mame : _mames) {
+        this->fallMame(mame);
+    }
+
+    this->checkSpawn();
 }
 
 void Game11Layer::initDisp() {
@@ -46,39 +57,164 @@ void Game11Layer::initDisp() {
     _btn02->setPosition(Vec2(winSizeCenterW + 450, 200));
     this->addChild(_btn02);
 
-    //豆を表示
+    //ステージノードを作成
     this->setStage(Node::create());
+    _stage->setPosition(Vec2(250, 250));
+    this->addChild(_stage);
+
+    //豆を表示
     for (int i = 0; i < 5; i++) {
         auto mame = Mame::create();
         mame->setMamePosition(Vec2(0, i));
-        this->addChild(mame);
         this->addMame(mame);
     }
-
 }
 
 void Game11Layer::addMame(Mame* mame) {
     //豆リストに豆を追加
-    _mameList.pushBack(mame);
+    _mames.pushBack(mame);
     //_stageノードに豆を追加
-    //_stage->addChild(mame);
+    _stage->addChild(mame);
     //位置を調整する
-    mame->adjustPosition();
+    mame->adjustPosition();   
+}
+
+void Game11Layer::deleteMame(Mame::mameType mame_type) {
+    auto mame = this->getMameAt(Vec2(0, 0));
+    if (!mame) return;
+
+    //豆タイプと一致していなかたら何もしない
+    if (mame->getMameType() != mame_type) return;
+
+    // 状態を消去中にする
+    mame->setState(Mame::State::DISAPEARING);
+
+    if (mame_type == Mame::mameType::OK) {
+        // 削除アニメーションを追加する
+        mame->runAction(
+            Sequence::create(
+                FadeOut::create(0.3f),
+                CallFuncN::create([this](Node* node) {
+            // クッキー一覧から削除する
+            auto mame = dynamic_cast<Mame*>(node);
+            _mames.eraseObject(mame);
+        }),
+                RemoveSelf::create(),
+            NULL));
+    }
+    else {
+        // 削除アニメーションを追加する
+        mame->runAction(
+            Sequence::create(
+                Spawn::create(
+                    MoveBy::create(0.3f, Vec2(300, 0)),
+                    FadeOut::create(0.3f),
+                    nullptr
+                ),
+                CallFuncN::create([this](Node* node) {
+            // クッキー一覧から削除する
+            auto mame = dynamic_cast<Mame*>(node);
+            _mames.eraseObject(mame);
+        }),
+                RemoveSelf::create(),
+            NULL));
+    }
     
+}
+
+Mame* Game11Layer::getMameAt(const Vec2& position){
+    for (auto& mame : _mames) {
+        if (position.equals(mame->getMamePosition())) {
+            return mame;
+        }
+    }
+    return nullptr;
+}
+
+bool Game11Layer::fallMame(Mame* mame)
+{
+    auto position = mame->getMamePosition();
+    // すでに一番下にあったときや、停止中じゃないとき、落ちない
+    if (position.y == 0 || !mame->isStatic()) {
+        return false;
+    }
+    
+    // 1つ下のグリッド座標を取り出す
+    auto downPosition = Vec2(position.x, position.y - 1);
+    // 1つ下を取り出す
+    auto down = this->getMameAt(Vec2(position.x, position.y - 1));
+    // 1つ下がなかったとき、落ちる
+    if (down == nullptr) {
+        // 落下アニメーション時間
+        const auto duration = 0.05;
+        // 落下距離
+        auto distance = -Mame::getSize();
+        // 状態を落下中にする
+        mame->setState(Mame::State::FALLING);
+        // 落下アニメーションの実行
+        mame->runAction(Sequence::create(MoveBy::create(duration, Vec2(0, distance)),
+            CallFuncN::create([this, downPosition](Node* node) {
+            // 落下アニメーション終了後
+            auto mame = dynamic_cast<Mame*>(node);
+            // 豆を動かす
+            this->moveMame(mame, downPosition);
+            mame->setState(Mame::State::STATIC);
+            // さらに落ちないか再度落下判定を行う
+            this->fallMame(mame);
+        }),
+            NULL));
+        return true;
+    }
+    return false;
+}
+
+void Game11Layer::moveMame(Mame* mame, const Vec2& mamePosition)
+{
+    mame->setMamePosition(mamePosition);
+    mame->adjustPosition();
+}
+
+Vector<Mame*> Game11Layer::checkSpawn()
+{
+    // 出現したクッキーの一覧
+    Vector<Mame*> mames;
+    // 一番上をチェック
+    auto mame = this->getMameAt(Vec2(0, 4));
+    if (!mame) { // もし豆がなければ
+        // 豆を追加する
+        auto mame = Mame::create();
+        mame->setMamePosition(Vec2(0, 4));
+        this->addMame(mame);
+    }
+    return std::move(mames);
 }
 
 void Game11Layer::ClickBtn01() {
     _btn01_state = true;
     auto ac = Sequence::create(
-        EaseElasticOut::create(ScaleTo::create(0.3, 1.1f)),
+        EaseElasticOut::create(ScaleTo::create(0.3f, 1.1f)),
         ScaleTo::create(0, 1.0f),
         CallFunc::create([&]() {
             _btn01_state = false;
         }),
         nullptr
     );
-
     _btn01->runAction(ac);
+    this->deleteMame(Mame::mameType::NG);
+}
+
+void Game11Layer::ClickBtn02() {
+    _btn02_state = true;
+    auto ac = Sequence::create(
+        EaseElasticOut::create(ScaleTo::create(0.3f, 1.1f)),
+        ScaleTo::create(0, 1.0f),
+        CallFunc::create([&]() {
+            _btn02_state = false;
+        }),
+        nullptr
+        );
+    _btn02->runAction(ac);
+    this->deleteMame(Mame::mameType::OK);
 }
 
 //タッチした時に呼び出される関数
@@ -88,6 +224,11 @@ bool Game11Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     if (_btn01->getBoundingBox().containsPoint(location) && !_btn01_state) {
         CCLOG("btn01 click");
         this->ClickBtn01();
+    }
+
+    if (_btn02->getBoundingBox().containsPoint(location) && !_btn02_state) {
+        CCLOG("btn02 click");
+        this->ClickBtn02();
     }
 
     return false;
@@ -104,7 +245,7 @@ void Game11Layer::backTitleCallback() {
 //コンストラクター
 //作成されるときに起こる処理
 //:以降で数値の初期化をすることが出来る
-Mame::Mame()
+Mame::Mame():_state(State::STATIC)
 {
 }
 
