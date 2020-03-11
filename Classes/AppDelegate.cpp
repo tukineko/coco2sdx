@@ -24,7 +24,6 @@
 
 #include "AppDelegate.h"
 #include "TitleLayer.h"
-#include "Game12Layer.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -101,8 +100,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    //auto scene = TitleLayer::createScene();
-    auto scene = Game12Layer::createScene();
+    auto scene = TitleLayer::createScene();
 
     // run
     director->runWithScene(scene);

@@ -13,13 +13,20 @@ protected:
     bool _hit2Flag = false;
     bool _hit3Flag = false;
 
+    bool _moving = false;
+
 public:
     static Scene* createScene();
     virtual bool init();
     CREATE_FUNC(Game12Layer);
     bool onTouchBegan(Touch* touch, Event* event);
 
-    void checkPos(Vec2 pos);
+    void TouchAnime(Vec2 pos);
+    void Check(Vec2 pos);
+    void hitOn(Vec2 pos);
+    void doAnimeOK();
+    void doAnimeMiss();
+    
 
     void backTitleCallback();
 };
