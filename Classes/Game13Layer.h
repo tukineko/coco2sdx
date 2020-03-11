@@ -16,6 +16,8 @@ protected:
         {0, 1, 1, 0}
     };
 
+    Sprite* _currentBlock;
+
 public:
     static Scene* createScene();
     virtual bool init();
@@ -26,6 +28,9 @@ public:
 
     void initDisp();
     bool touchBlock(Vec2 pos);
+    void nextBlock(Vec2 pos);
+    void drawLine(Vec2 pos1, Vec2 pos2);
+    bool nextBlockCheck();
 
     void backTitleCallback();
 };

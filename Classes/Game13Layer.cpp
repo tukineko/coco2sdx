@@ -36,6 +36,8 @@ bool Game13Layer::init()
     //タッチイベントの設定
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(Game13Layer::onTouchBegan, this);
+    listener->onTouchEnded = CC_CALLBACK_2(Game13Layer::onTouchEnded, this);
+    listener->onTouchMoved = CC_CALLBACK_2(Game13Layer::onTouchMoved, this);
     auto dispatcher = Director::getInstance()->getEventDispatcher();
     dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
@@ -58,7 +60,9 @@ void Game13Layer::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 //タッチしながら移動中に呼び出される関数
 void Game13Layer::onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event) {
+    Vec2 location = touch->getLocation();
 
+    this->nextBlock(location);
 }
 
 void Game13Layer::initDisp() {
@@ -69,7 +73,6 @@ void Game13Layer::initDisp() {
             auto sp = Sprite::createWithTexture(_blockBatchNode->getTexture(), Rect(0, 0, 100, 100));
             sp->setPosition(Vec2((winSizeCenterW - 200) + 100 * x, (winSizeCenterH + 100) - 100 * y));
             sp->setTextureRect(Rect(100 * _stage.at(y).at(x), 0, 100, 100));
-            sp->setTag(_stage.at(y).at(x));
             this->addChild(sp);
             _blockList.pushBack(sp);
         }
@@ -77,16 +80,50 @@ void Game13Layer::initDisp() {
 }
 
 bool Game13Layer::touchBlock(Vec2 pos) {
-
     for (auto block : _blockList) {
         if (block->getBoundingBox().containsPoint(pos)) {
-            CCLOG("%f, %f", block->getPosition().x, block->getPosition().y);
-            CCLOG("%d", block->getTag());
-
-            return true;
+            int x = (block->getPosition().x - (winSizeCenterW - 200)) / 100;
+            int y = -(block->getPosition().y - (winSizeCenterH + 100)) / 100;
+            CCLOG("first:%d", _stage.at(y).at(x));
+            int type = _stage.at(y).at(x);
+            if (type == 1) {
+                _currentBlock = block;
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
+    return false;
+}
 
+void Game13Layer::nextBlock(Vec2 pos) {
+    for (auto block : _blockList) {
+        if (block->getBoundingBox().containsPoint(pos) && _currentBlock != block) {
+            int x = (block->getPosition().x - (winSizeCenterW - 200)) / 100;
+            int y = -(block->getPosition().y - (winSizeCenterH + 100)) / 100;
+            CCLOG("second:%d", _stage.at(y).at(x));
+            int type = _stage.at(y).at(x);
+            if (type == 1) {
+                this->drawLine(_currentBlock->getPosition(), block->getPosition());
+                int fx = (_currentBlock->getPosition().x - (winSizeCenterW - 200)) / 100;
+                int fy = -(_currentBlock->getPosition().y - (winSizeCenterH + 100)) / 100;
+                _stage.at(fy).at(fx) = 2;
+                _currentBlock = block;
+            }
+        }
+    }
+}
+
+void Game13Layer::drawLine(Vec2 pos1, Vec2 pos2) {
+    DrawNode* line = DrawNode::create();
+    line->drawSegment(pos1, pos2, 2.5f, Color4F::RED);
+    this->addChild(line);
+
+}
+
+bool Game13Layer::nextBlockCheck() {
     return false;
 }
 
