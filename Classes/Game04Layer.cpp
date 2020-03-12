@@ -29,8 +29,7 @@ bool Game04Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 100);
 
-    //スタート文字
-    _moveNode = Sprite::create("txt_start.png");
+    _moveNode = Sprite::create("game04/yubi.png");
     _moveNode->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     this->addChild(_moveNode);
 

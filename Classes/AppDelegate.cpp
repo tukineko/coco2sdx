@@ -101,8 +101,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    //auto scene = TitleLayer::createScene();
-    auto scene = Game13Layer::createScene();
+    auto scene = TitleLayer::createScene();
+    //auto scene = Game13Layer::createScene();
 
     // run
     director->runWithScene(scene);

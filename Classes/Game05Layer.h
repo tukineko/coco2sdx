@@ -16,8 +16,7 @@ public:
     virtual bool init();
     CREATE_FUNC(Game05Layer);
 
-    void update(float dt);
-
+    
 
     void backTitleCallback();
 };

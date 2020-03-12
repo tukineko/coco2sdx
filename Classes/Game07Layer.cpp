@@ -41,7 +41,7 @@ bool Game07Layer::init()
     int tagId = 0;
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 4; y++) {
-            auto card = Sprite::create("card.png");
+            auto card = Sprite::create("game07/card.png");
             card->setPosition(Vec2(150 + 160 * x, winSizeH - 150 - 160 * y));
             this->addChild(card, 1, tagId);
             _cards.pushBack(card);
@@ -105,7 +105,7 @@ void Game07Layer::clickCard(int tagId) {
     else {
         if (_card1Id == _cardAry[tagId]) {
             if (this->checkCards()) {
-                auto text = Sprite::create("txt_gameover.png");
+                auto text = Sprite::create("common/game_over.png");
                 text->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
                 this->addChild(text, 10);
             }
@@ -123,22 +123,22 @@ const char* Game07Layer::getCardImageFileName(int num)
 {
     switch (num) {
     case 0:
-        return "puzzle1.png";
+        return "game07/puzzle1.png";
 
     case 1:
-        return "puzzle2.png";
+        return "game07/puzzle2.png";
 
     case 2:
-        return "puzzle3.png";
+        return "game07/puzzle3.png";
 
     case 3:
-        return "puzzle4.png";
+        return "game07/puzzle4.png";
 
     case 4:
-        return "puzzle5.png";
+        return "game07/puzzle5.png";
 
     case 5:
-        return "puzzle6.png";
+        return "game07/puzzle6.png";
 
     default:
         return "";
@@ -161,7 +161,7 @@ void Game07Layer::missAnime() {
                 MoveBy::create(0.1f, Vec2(-10, 0)),
                 CallFunc::create([card, this]() {
                     //すべてのカード表示を表に
-                    card->setTexture("card.png");
+                    card->setTexture("game07/card.png");
                     _isAnime = false;
                     }),
                 nullptr)

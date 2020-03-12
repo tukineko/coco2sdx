@@ -27,7 +27,7 @@ bool Game08Layer::init()
     this->addChild(menu, 100);
 
     //スコア画像はBatchNodeで処理
-    _scoreBatchNode = SpriteBatchNode::create("number.png");
+    _scoreBatchNode = SpriteBatchNode::create("common/number.png");
     this->addChild(_scoreBatchNode);
 
     //初期値
@@ -57,7 +57,7 @@ void Game08Layer::initDisp() {
     this->addChild(bg, 0);
 
     //地面
-    auto floor = Sprite::create("floor.png");
+    auto floor = Sprite::create("game08/floor.png");
     floor->setPosition(Vec2(winSizeCenterW, 30));
     this->addChild(floor);
     
@@ -97,16 +97,16 @@ void Game08Layer::viewScore() {
 //自機と操作ボタンの表示
 void Game08Layer::drawPlayer() {
     //自機の表示
-    _player = Sprite::create("player.png");
+    _player = Sprite::create("game08/player.png");
     _player->setPosition(Vec2(winSizeCenterW, 150));
     this->addChild(_player, 1);
 
     //操作ボタン
-    _btnL = Sprite::create("btnL.png");
+    _btnL = Sprite::create("game08/btnL.png");
     _btnL->setPosition(Vec2(100, winSizeCenterH));
     this->addChild(_btnL, 10);
 
-    _btnR = Sprite::create("btnR.png");
+    _btnR = Sprite::create("game08/btnR.png");
     _btnR->setPosition(Vec2(winSizeW - 100, winSizeCenterH));
     this->addChild(_btnR, 10);
 

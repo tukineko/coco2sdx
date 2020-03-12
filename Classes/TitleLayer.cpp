@@ -38,7 +38,7 @@ bool TitleLayer::init()
     this->addChild(bg, (int)mainZOderList::BG);
 
     //タイトル
-    auto title = Sprite::create("title.png");
+    auto title = Sprite::create("title/logo.png");
     title->setPosition(Vec2(winSizeCenterW, winSizeH - 150));
     title->setOpacity(0);
     this->addChild(title, (int)mainZOderList::TITLE);
@@ -67,13 +67,13 @@ bool TitleLayer::init()
     mItem3->setAnchorPoint(Point::ZERO);
     mItem3->setColor(Color3B::BLUE);
 
-    auto labelBtnLabel4 = Label::createWithSystemFont("文字を指でぐるぐる回すだけ", "Arial", fontsize);
+    auto labelBtnLabel4 = Label::createWithSystemFont("指でぐるぐる回すだけ", "Arial", fontsize);
     auto mItem4 = MenuItemLabel::create(labelBtnLabel4, CC_CALLBACK_0(TitleLayer::nextSceneCallback4, this));
     mItem4->setPosition(Vec2(leftPos, winSizeH - 500));
     mItem4->setAnchorPoint(Point::ZERO);
     mItem4->setColor(Color3B::BLUE);
 
-    auto labelBtnLabel5 = Label::createWithSystemFont("スターウォーズOP風", "Arial", fontsize);
+    auto labelBtnLabel5 = Label::createWithSystemFont("空", "Arial", fontsize);
     auto mItem5 = MenuItemLabel::create(labelBtnLabel5, CC_CALLBACK_0(TitleLayer::nextSceneCallback5, this));
     mItem5->setPosition(Vec2(leftPos, winSizeH - 550));
     mItem5->setAnchorPoint(Point::ZERO);
@@ -145,7 +145,7 @@ bool TitleLayer::init()
     );
 
     //キャラクター
-    _chara = Sprite::create("player.png");
+    _chara = Sprite::create("title/player.png");
     _chara->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     _chara->setFlippedX(true);
     this->addChild(_chara, (int)mainZOderList::CHARA);
@@ -231,7 +231,7 @@ bool TitleLayer::onTouchBegan(Touch* touch, Event* event) {
     auto location = touch->getLocation();
 
     // 作成したパーティクルのプロパティリストを読み込み
-    auto particle = ParticleSystemQuad::create("particle_texture.plist");
+    auto particle = ParticleSystemQuad::create("particle_texture/particle_texture.plist");
     particle->resetSystem();
     // パーティクルを表示する場所の設定
     particle->setPosition(location);
@@ -256,7 +256,7 @@ void TitleLayer::onTouchMoved(Touch* touch, Event* event) {
     auto location = touch->getLocation();
 
     // 作成したパーティクルのプロパティリストを読み込み
-    auto particle = ParticleSystemQuad::create("particle_texture.plist");
+    auto particle = ParticleSystemQuad::create("particle_texture/particle_texture.plist");
     particle->resetSystem();
     // パーティクルを表示する場所の設定
     particle->setPosition(location);

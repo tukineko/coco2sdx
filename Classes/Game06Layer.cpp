@@ -56,7 +56,7 @@ bool Game06Layer::init()
     
 
     //プレイヤー
-    Sprite* character = Sprite::create("puzzle3.png");
+    Sprite* character = Sprite::create("game06/puzzle1.png");
     character->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     auto material = PHYSICSBODY_MATERIAL_DEFAULT;
     material.density = 1.0f; // 密度

@@ -35,7 +35,7 @@ bool Game01Layer::init()
     this->addChild(menu, (int)mainZOderList::TITLEBACK);
 
     //スコア画像はBatchNodeで処理
-    _scoreBatchNode = SpriteBatchNode::create("number.png");
+    _scoreBatchNode = SpriteBatchNode::create("common/number.png");
     this->addChild(_scoreBatchNode);
 
     //初期化
@@ -138,22 +138,22 @@ void Game01Layer::update(float flame) {
 
 void Game01Layer::GameStart()
 {
-    auto count3 = Sprite::create("countdown3.png");
+    auto count3 = Sprite::create("common/count3.png");
     count3->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     count3->setOpacity(0);
     this->addChild(count3);
 
-    auto count2 = Sprite::create("countdown2.png");
+    auto count2 = Sprite::create("common/count2.png");
     count2->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     count2->setOpacity(0);
     this->addChild(count2);
 
-    auto count1 = Sprite::create("countdown1.png");
+    auto count1 = Sprite::create("common/count1.png");
     count1->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     count1->setOpacity(0);
     this->addChild(count1);
 
-    auto start = Sprite::create("txt_start.png");
+    auto start = Sprite::create("common/game_start.png");
     start->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     start->setOpacity(1);
     this->addChild(start);
@@ -277,7 +277,7 @@ Rect Game01Layer::getRect(Node* node)
 }
 
 void Game01Layer::GameOver() {
-    auto gameover = Sprite::create("txt_gameover.png");
+    auto gameover = Sprite::create("common/game_over.png");
     gameover->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     this->addChild(gameover);
 }
@@ -332,13 +332,13 @@ const char* Enemy::getImageFileName(kEnemyType _type)
 {
     switch (_type) {
     case Red:
-        return "puzzle1.png";
+        return "game01/puzzle1.png";
 
     case Blue:
-        return "puzzle2.png";
+        return "game01/puzzle2.png";
 
     case Green:
-        return "puzzle3.png";
+        return "game01/puzzle3.png";
 
     default:
         return "";

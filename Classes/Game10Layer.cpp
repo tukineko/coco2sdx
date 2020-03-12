@@ -44,7 +44,15 @@ bool Game10Layer::init()
     mItem1->setAnchorPoint(Point::ZERO);
     mItem1->setColor(Color3B::BLUE);
 
-    auto menu_text = Menu::create(mItem1, NULL);
+    auto labelBtnLabel2 = Label::createWithSystemFont("演出2", "Arial", fontsize);
+    auto mItem2 = MenuItemLabel::create(labelBtnLabel2, [=](Ref* sender) {
+        this->effect02();
+    });
+    mItem2->setPosition(Vec2(leftPos, winSizeH - 100));
+    mItem2->setAnchorPoint(Point::ZERO);
+    mItem2->setColor(Color3B::BLUE);
+
+    auto menu_text = Menu::create(mItem1, mItem2, NULL);
     menu_text->setPosition(Point::ZERO);
     this->addChild(menu_text, 10);
 
@@ -53,7 +61,7 @@ bool Game10Layer::init()
 
 void Game10Layer::effect01() {
     //演出
-    auto bg = Sprite::create("bg01.png");
+    auto bg = Sprite::create("game10/bg.png");
     bg->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     bg->setScale(2.5f);
     this->addChild(bg, 5);
@@ -61,6 +69,17 @@ void Game10Layer::effect01() {
         RotateBy::create(10.0f, 360.0f)
     );
     bg->runAction(ac);
+}
+
+void Game10Layer::effect02() {
+    //スターウォーズ風
+    auto sp = Sprite::create("game10/text.png");
+    sp->setRotation3D(cocos2d::Vertex3F(-80.0, 0.0, 0.0));
+    sp->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    this->addChild(sp);
+
+    
+    //_text->setPositionZ(_text->getPositionZ() - _speed);
 }
 
 #include "TitleLayer.h"

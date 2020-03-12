@@ -29,21 +29,8 @@ bool Game05Layer::init()
     menu->setPosition(Point::ZERO);
     this->addChild(menu, 100);
 
-    //スターウォーズ風
-    _text = Sprite::create("text.png");
-    _text->setRotation3D(cocos2d::Vertex3F(-80.0, 0.0, 0.0));
-    //_text->setPosition(Vec2(winSizeCenterW, 0 - text->getContentSize().height / 2));
-    _text->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
-    this->addChild(_text);
     
-    this->scheduleUpdate();
-
     return true;
-}
-
-void Game05Layer::update(float dt) {
-   
-    _text->setPositionZ(_text->getPositionZ() - _speed);
 }
 
 #include "TitleLayer.h"

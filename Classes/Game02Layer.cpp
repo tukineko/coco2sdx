@@ -69,7 +69,7 @@ void Game02Layer::ViewScore()
 
 void Game02Layer::GameOver() {
     this->_game_state = 3;
-    auto gameover = Sprite::create("txt_gameover.png");
+    auto gameover = Sprite::create("common/game_over.png");
     gameover->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     this->addChild(gameover);
 
@@ -77,22 +77,22 @@ void Game02Layer::GameOver() {
 
 void Game02Layer::GameStart()
 {
-    auto count3 = Sprite::create("countdown3.png");
+    auto count3 = Sprite::create("common/count3.png");
     count3->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     count3->setOpacity(0);
     this->addChild(count3);
 
-    auto count2 = Sprite::create("countdown2.png");
+    auto count2 = Sprite::create("common/count2.png");
     count2->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     count2->setOpacity(0);
     this->addChild(count2);
 
-    auto count1 = Sprite::create("countdown1.png");
+    auto count1 = Sprite::create("common/count1.png");
     count1->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     count1->setOpacity(0);
     this->addChild(count1);
 
-    auto start = Sprite::create("txt_start.png");
+    auto start = Sprite::create("common/game_start.png");
     start->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     start->setOpacity(1);
     this->addChild(start);
@@ -193,7 +193,7 @@ void Game02Layer::spawnBall()
 {
     this->_ball_status = 0;
 
-    this->_ball = Sprite::create("puzzle2.png");
+    this->_ball = Sprite::create("game02/puzzle1.png");
     this->_ball->setPosition(ItemPos);
     this->addChild(this->_ball);
 

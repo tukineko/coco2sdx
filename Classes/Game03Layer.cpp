@@ -45,7 +45,7 @@ bool Game03Layer::init()
     this->addChild(menu, (int)mainZOderList::MENU);
 
     //スコア画像はBatchNodeで処理
-    _scoreBatchNode = SpriteBatchNode::create("number.png");
+    _scoreBatchNode = SpriteBatchNode::create("common/number.png");
     this->addChild(_scoreBatchNode);
 
     // 物理衝突リスナー
@@ -109,7 +109,7 @@ void Game03Layer::initDisp()
 
 //オブジェクトを落とす
 void Game03Layer::addObject(Node* parent, Vec2 point) {
-    auto sprite = Sprite::create("btnOn.png");
+    auto sprite = Sprite::create("game03/block.png");
     auto body = PhysicsBody::createBox(sprite->getContentSize());
     body->setContactTestBitmask(1);
     sprite->setPhysicsBody(body);
@@ -137,7 +137,7 @@ bool Game03Layer::onContactBegin(PhysicsContact& contact)
 
 void Game03Layer::GameOver() {
     _game_state = 1;
-    auto gameover = Sprite::create("txt_gameover.png");
+    auto gameover = Sprite::create("common/game_over.png");
     gameover->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
     this->addChild(gameover, (int)mainZOderList::GAMEOVER);
 

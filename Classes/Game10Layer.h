@@ -16,6 +16,7 @@ public:
     CREATE_FUNC(Game10Layer);
 
     void effect01();
+    void effect02();
 
     void backTitleCallback();
 };
