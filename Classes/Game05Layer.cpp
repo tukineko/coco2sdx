@@ -1,6 +1,8 @@
 ﻿#include "Game05Layer.h"
 #include "SimpleAudioEngine.h"
 
+#define PI 3.14159265358979323846
+
 USING_NS_CC;
 
 Scene* Game05Layer::createScene()
@@ -30,7 +32,48 @@ bool Game05Layer::init()
     this->addChild(menu, 100);
 
     
+    //ゲージ
+    _gauge = Sprite::create("game05/gauge.png");
+    _gauge->setPosition(Vec2(winSizeCenterW, 100));
+    _gauge->setAnchorPoint(Point::ZERO);
+    this->addChild(_gauge);
+    
+    _text = Label::createWithSystemFont("aaa", "Arial", 48);
+    _text->setPosition(Vec2(300, 200));
+    this->addChild(_text);
+
+    this->scheduleUpdate();
+    
     return true;
+}
+
+void Game05Layer::update(float dt) {
+    _text->setString(std::to_string(_gaugeCnt));
+
+
+    if (65 <= _gaugeCnt) {
+        _gaugeSpeed = 2.0;
+    }
+    else if (30 <= _gaugeCnt && _gaugeCnt < 65) {
+        _gaugeSpeed = 1.0;
+    }
+    else {
+        _gaugeSpeed = 0.5;
+    }
+
+    if (_gaugeCnt <= 0 || 100 <= _gaugeCnt) {
+        _gaugeCntM *= -1;
+    }
+    _gaugeCnt += _gaugeCntM * _gaugeSpeed;
+    CCLOG("_gaugeCnt:%f", _gaugeCnt);
+
+
+    viewGauge();
+}
+
+void Game05Layer::viewGauge() {
+    _gauge->setTextureRect(Rect(0, 500 - (500 * _gaugeCnt / 100), _gauge->getContentSize().width, 500 * _gaugeCnt / 100));
+
 }
 
 #include "TitleLayer.h"

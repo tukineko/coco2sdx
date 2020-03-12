@@ -8,15 +8,21 @@ USING_NS_CC;
 class Game05Layer : public Layer
 {
 protected:
-    Sprite* _text;
-    float _speed = 1.0f;
+    Sprite* _gauge;
+    float _gaugeCnt = 1;
+    float _gaugeCntM = 1;
+    float _gaugeSpeed = 0.5;
+    float _py = 0;
+
+    Label* _text;
 
 public:
     static Scene* createScene();
     virtual bool init();
     CREATE_FUNC(Game05Layer);
-
+    void update(float dt);
     
+    void viewGauge();
 
     void backTitleCallback();
 };
