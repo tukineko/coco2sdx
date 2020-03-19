@@ -11,6 +11,8 @@ protected:
     enum class mainZOderList {
         BG = 0,
         GAUGE,
+        POINT,
+        SCORE,
         TEXT,
     };
 
@@ -30,10 +32,18 @@ protected:
     float _gaugeCnt = 0;
     float _gaugeTime = 0;
     GaugeState _gaugeState;
-
-    Sprite* _tapstart;
+    bool _gaugePlus = true;
 
     Label* _text;
+    Sprite* _tapstart;
+    SpriteBatchNode* _pointBatchNode;
+    float _startPoint;
+    float _endPoint;
+    float _calcPoint;
+    Label* _textPoint;
+
+
+    
 
 public:
     static Scene* createScene();
@@ -44,11 +54,15 @@ public:
     
     void TapStart();
     void TapStop();
+    void TapReset();
     void viewGauge();
     float GaugeCalc(float t);
-    void TapAnime(float dt);
+    void GaugeCalc2(float t);
+    void PointAnime(float dt);
+
 
     void backTitleCallback();
+
 };
 
 #endif // __Game05Layer_H__

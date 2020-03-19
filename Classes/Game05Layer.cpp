@@ -36,6 +36,10 @@ bool Game05Layer::init()
     _game_state = GameState::DEFAULT;
     _gaugeState = GaugeState::STOP;
     
+    //スコア画像はBatchNodeで処理
+    _pointBatchNode = SpriteBatchNode::create("common/number.png");
+    this->addChild(_pointBatchNode);
+
     //ゲージ
     auto gauge_bg = Sprite::create("game05/gauge_bg.png");
     gauge_bg->setPosition(Vec2(winSizeCenterW - 50 - 16, 150 - 15));
@@ -62,6 +66,15 @@ bool Game05Layer::init()
         )
     );
 
+    //ポイント表示
+    _textPoint = Label::createWithSystemFont("", "Arial", 300);
+    _textPoint->setPosition(Vec2(winSizeCenterW, winSizeCenterH));
+    _textPoint->setColor(Color3B(0, 0, 255));
+    _textPoint->enableOutline(Color4B::WHITE, 20);
+    _textPoint->setVisible(false);
+    this->addChild(_textPoint, (int)mainZOderList::POINT);
+
+    //デバック用ゲージ
     _text = Label::createWithSystemFont("デバック用ゲージ数値", "Arial", 48);
     _text->setPosition(Vec2(250, winSizeH - 100));
     this->addChild(_text, (int)mainZOderList::TEXT);
@@ -87,6 +100,9 @@ bool Game05Layer::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     else if(_gaugeState == GaugeState::MOVING && _game_state == GameState::GAME) {
         this->TapStop();
     }
+    else if (_game_state == GameState::RESULT) {
+        this->TapReset();
+    }
     
 
     return false;
@@ -97,7 +113,8 @@ void Game05Layer::update(float dt) {
     _gaugeTime += dt;
     
     if (_gaugeState == GaugeState::MOVING) {
-        _gaugeCnt = this->GaugeCalc(_gaugeTime);
+        //_gaugeCnt = this->GaugeCalc(_gaugeTime);
+        this->GaugeCalc2(_gaugeTime);
         _text->setString(std::to_string(_gaugeCnt));
         //CCLOG("%f", _gaugeCnt);
         this->viewGauge();
@@ -111,6 +128,48 @@ void Game05Layer::viewGauge() {
 
 float Game05Layer::GaugeCalc(float t) {
     return (-0.5 * (cos(PI * t) - 1)) * 100;
+}
+
+void Game05Layer::GaugeCalc2(float t) {    
+    //CCLOG("%f", -100 * (cos(PI * t) - 100));
+
+    /*float calc;
+    if (_gaugeCnt >= 80) {
+        calc = 5;
+    }
+    else if (35 < _gaugeCnt && _gaugeCnt < 80) {
+        calc = 4;
+    }
+    else {
+        calc = 3;
+    }
+
+    if (_gaugePlus) {
+        _gaugeCnt += calc;
+        if (_gaugeCnt >= 100) {
+            _gaugeCnt = 100;
+            _gaugePlus = false;
+        }
+    }
+    else {
+        _gaugeCnt -= calc;
+        if (_gaugeCnt <= 0) {
+            _gaugeCnt = 0;
+            _gaugePlus = true; 
+        }
+    }*/
+
+    //_gaugeCnt = (0.5 * (1 + sin(PI * (t - 0.5)))) * 100;
+    //_gaugeCnt = 1 - sqrt(1 - t);
+    //_gaugeCnt = t * t;
+
+    //CCLOG("%f", (cos(PI * t) - 1));
+
+    CCLOG("%f", t);
+    _gaugeCnt = t * t * t;
+    //CCLOG("%f", _gaugeCnt);
+    
+        
 }
 
 void Game05Layer::TapStart()
@@ -139,27 +198,80 @@ void Game05Layer::TapStart()
 
 void Game05Layer::TapStop() {
     _gaugeState = GaugeState::STOP;
+    _game_state = GameState::RESULT;
     this->removeChildByName("tap");
-    this->scheduleOnce(schedule_selector(Game05Layer::TapAnime), 0);
+    _calcPoint = _gaugeCnt / 10;
+    _startPoint = 0;
+    _endPoint = _gaugeCnt;
+    _textPoint->setVisible(true);
+    this->schedule(schedule_selector(Game05Layer::PointAnime), 0.05, 10, 0);
 }
 
-void Game05Layer::TapAnime(float dt) {
-    //CCLOG("%f", dt);
+void Game05Layer::TapReset() {
+    _game_state = GameState::DEFAULT;
+    _gaugeCnt = 0;
+    _textPoint->setVisible(false);
+    _tapstart->setVisible(true);
+    this->viewGauge();
+    
+}
 
+void Game05Layer::PointAnime(float dt) {
 
-    float elapsedTime = 0.0f;
-    float time = 10.0f;
-    while (elapsedTime < time)
-    {
-        float rate = elapsedTime / time;
-        CCLOG("%f", _gaugeCnt * rate);
-        // テキストの更新
-        //scoreText.text = (befor + (after - befor) * rate).ToString("f0");
-
-        elapsedTime += dt;
-        // 0.01秒待つ
-        //yield return new WaitForSeconds(0.01f);
+    _startPoint += _calcPoint;
+    if (_endPoint < _startPoint) {
+        _startPoint = _endPoint;
     }
+
+    GLubyte r = 0;
+    GLubyte g = 0;
+    GLubyte b = 0;
+    if (_startPoint < 12.5) {
+        r = 0;
+        g = 0;
+        b = 255;
+    }else if(12.5 <= _startPoint && _startPoint < 37.5) {
+        r = 0;
+        g = 255;
+        b = 255;
+    }else if(37.5 <= _startPoint && _startPoint < 62.5) {
+        r = 0;
+        g = 255;
+        b = 0;
+    }else if (62.5 <= _startPoint && _startPoint < 87.5) {
+        r = 255;
+        g = 255;
+        b = 0;
+    }else{
+        r = 255;
+        g = 0;
+        b = 0;
+    }
+
+    _textPoint->setColor(Color3B(r, g, b));
+    _textPoint->setString(std::to_string((int)std::round(_startPoint)));
+
+    //scoreの名前がついているノードをすべて削除
+    /*this->enumerateChildren("point", [](Node* node) -> bool {
+        auto action = RemoveSelf::create();
+        node->runAction(action);
+        return false;
+    });
+
+    std::string score = std::to_string((int)_startPoint);
+
+    int lang = score.length();
+    int numberRect = 64;
+
+    for (int i = 0; i < lang; i++) {
+        auto number = Sprite::createWithTexture(_pointBatchNode->getTexture(), Rect(0, 0, numberRect, numberRect));
+        number->setPosition(Vec2((winSizeCenterW - 300) + numberRect * i, winSizeCenterH - 50));
+        char c = score[i];
+        int num = c - '0';
+        number->setTextureRect(Rect(numberRect * num, 0, numberRect, numberRect));
+        this->addChild(number, (int)mainZOderList::SCORE, "point");
+    }*/
+
 }
 
 #include "TitleLayer.h"
