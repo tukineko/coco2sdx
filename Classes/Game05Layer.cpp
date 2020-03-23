@@ -131,45 +131,21 @@ float Game05Layer::GaugeCalc(float t) {
 }
 
 void Game05Layer::GaugeCalc2(float t) {    
-    //CCLOG("%f", -100 * (cos(PI * t) - 100));
-
-    /*float calc;
-    if (_gaugeCnt >= 80) {
-        calc = 5;
-    }
-    else if (35 < _gaugeCnt && _gaugeCnt < 80) {
-        calc = 4;
-    }
-    else {
-        calc = 3;
-    }
-
     if (_gaugePlus) {
-        _gaugeCnt += calc;
+        _gaugeCnt += t * t * 0.8;
         if (_gaugeCnt >= 100) {
             _gaugeCnt = 100;
             _gaugePlus = false;
         }
     }
     else {
-        _gaugeCnt -= calc;
+        _gaugeCnt -= t * t * 0.5;
         if (_gaugeCnt <= 0) {
             _gaugeCnt = 0;
+            _gaugeTime = 0;
             _gaugePlus = true; 
         }
-    }*/
-
-    //_gaugeCnt = (0.5 * (1 + sin(PI * (t - 0.5)))) * 100;
-    //_gaugeCnt = 1 - sqrt(1 - t);
-    //_gaugeCnt = t * t;
-
-    //CCLOG("%f", (cos(PI * t) - 1));
-
-    CCLOG("%f", t);
-    _gaugeCnt = t * t * t;
-    //CCLOG("%f", _gaugeCnt);
-    
-        
+    }        
 }
 
 void Game05Layer::TapStart()
